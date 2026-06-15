@@ -1,0 +1,49 @@
+{
+  "baseline_avg": {
+    "tokens_per_sec": 40.3118,
+    "kv_cache_kb": 5664.0,
+    "memory_delta_mb": 5.438,
+    "perplexity": 4.2572
+  },
+  "old_turbo_avg": {
+    "tokens_per_sec": 11.9596,
+    "kv_cache_kb": 1740.0,
+    "memory_delta_mb": 17.5347,
+    "perplexity": 4.5154
+  },
+  "new_wht_avg": {
+    "tokens_per_sec": 10.5721,
+    "kv_cache_kb": 1653.0,
+    "perplexity": 4.8087
+  },
+  "per_prompt": [
+    {
+      "prompt": "The future of artificial intelligence in healthcare will",
+      "tokens_per_sec": 10.3468,
+      "kv_cache_kb": 1624.5,
+      "perplexity": 5.7421,
+      "generated_text": "The future of artificial intelligence in healthcare will be determined by how well we can predict and treat the symptoms of disease,\" said Dr. David A. Karp, director of the Center for Neural Engineering at the University of California, San Diego. \"We are already seeing the potential of neural networks"
+    },
+    {
+      "prompt": "Quantum computing represents a fundamental shift in",
+      "tokens_per_sec": 10.8037,
+      "kv_cache_kb": 1624.5,
+      "perplexity": 3.7255,
+      "generated_text": "Quantum computing represents a fundamental shift in the way we think about the world. It's a revolution in how we think about the world, and it's a revolution in how we think about the world.\n\nThe first thing that comes to mind when you think about quantum computing is the"
+    },
+    {
+      "prompt": "The most significant challenge facing climate science today is",
+      "tokens_per_sec": 10.3535,
+      "kv_cache_kb": 1653.0,
+      "perplexity": 4.4357,
+      "generated_text": "The most significant challenge facing climate science today is the lack of a consensus among scientists about the causes of climate change,\" said Dr. David R. Schindler, director of the Center for Climate Change Communication at the University of California, Berkeley. \"The lack of consensus is a major obstacle to"
+    },
+    {
+      "prompt": "In the field of natural language processing, transformer models have",
+      "tokens_per_sec": 10.7843,
+      "kv_cache_kb": 1710.0,
+      "perplexity": 5.3314,
+      "generated_text": "In the field of natural language processing, transformer models have been used to model the processing of natural language. The model is a set of rules that describe how to transform a given input into a given output. The model is a set of rules that describe how to transform a given input into a given output."
+    }
+  ]
+}

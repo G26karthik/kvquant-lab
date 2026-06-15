@@ -1,0 +1,56 @@
+{
+  "checkpoint": {
+    "avg_perplexity": 17.064326592358835,
+    "avg_speed_tok_sec": 27.956748682494556,
+    "avg_cache_size_kb": 13056.0,
+    "niah": {
+      "256": {
+        "Early": 0.0,
+        "Middle": 0.0,
+        "Late": 0.0
+      },
+      "512": {
+        "Early": 0.0,
+        "Middle": 0.0,
+        "Late": 0.0
+      },
+      "768": {
+        "Early": 0.0,
+        "Middle": 0.0,
+        "Late": 0.0
+      },
+      "1024": {
+        "Early": 0.0,
+        "Middle": 0.0,
+        "Late": 0.0
+      }
+    }
+  },
+  "independent": {
+    "avg_perplexity": 2.1343847426671876,
+    "avg_speed_tok_sec": 30.62752961133804,
+    "avg_cache_size_kb": 6912.0,
+    "niah": {
+      "256": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "512": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "768": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 80.0
+      },
+      "1024": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      }
+    }
+  }
+}

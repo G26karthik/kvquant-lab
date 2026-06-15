@@ -1,0 +1,22 @@
+{
+  "Baseline": {
+    "passage_qa": 25.0,
+    "summarization": 11.986586888947521,
+    "code_completion": 0.0
+  },
+  "WHT+Asym-4bit": {
+    "passage_qa": 0.0,
+    "summarization": 0.0,
+    "code_completion": 5.0
+  },
+  "Outlier-2.5bit": {
+    "passage_qa": 5.0,
+    "summarization": 0.0,
+    "code_completion": 5.0
+  },
+  "Outlier-3.5bit": {
+    "passage_qa": 0.0,
+    "summarization": 0.0,
+    "code_completion": 5.0
+  }
+}

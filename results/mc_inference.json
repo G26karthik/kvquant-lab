@@ -1,0 +1,19 @@
+{
+  "results": {
+    "rm": {
+      "avg_perplexity": 4.138068804613096,
+      "avg_speed_tok_sec": 35.61138188830864,
+      "avg_cache_size_kb": 5568.0
+    },
+    "grm": {
+      "avg_perplexity": 4.138068804613096,
+      "avg_speed_tok_sec": 26.04780246196814,
+      "avg_cache_size_kb": 5568.0
+    },
+    "ssc": {
+      "avg_perplexity": 4.138068804613096,
+      "avg_speed_tok_sec": 26.760235887674835,
+      "avg_cache_size_kb": 5568.0
+    }
+  }
+}

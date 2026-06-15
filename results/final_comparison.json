@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-06-14T20:22:23.005041Z",
+  "schemes": [
+    {
+      "scheme": "Baseline FP16",
+      "bit_rate": 16.0,
+      "compression_ratio": 1.0,
+      "wikitext_ppl": 19.031841359412685,
+      "hellaswag_acc": 40.0,
+      "niah_512_mid": 100.0,
+      "nn_recall_1": null,
+      "passage_qa": 25.0,
+      "summarization_r1": 11.986586888947521,
+      "code_completion": 0.0
+    },
+    {
+      "scheme": "Original TurboQuant (3-bit)",
+      "bit_rate": 4.0,
+      "compression_ratio": 4.0,
+      "wikitext_ppl": 89.33866518782399,
+      "hellaswag_acc": 37.0,
+      "niah_512_mid": null,
+      "nn_recall_1": null,
+      "passage_qa": null,
+      "summarization_r1": null,
+      "code_completion": null
+    },
+    {
+      "scheme": "Original TurboQuant (4-bit)",
+      "bit_rate": 5.0,
+      "compression_ratio": 3.2,
+      "wikitext_ppl": 24.71317648931475,
+      "hellaswag_acc": 38.0,
+      "niah_512_mid": 100.0,
+      "nn_recall_1": null,
+      "passage_qa": null,
+      "summarization_r1": null,
+      "code_completion": null
+    },
+    {
+      "scheme": "WHT + Asymmetric QJL (3-bit)",
+      "bit_rate": 4.0,
+      "compression_ratio": 4.0,
+      "wikitext_ppl": 76.92665996647646,
+      "hellaswag_acc": 42.0,
+      "niah_512_mid": null,
+      "nn_recall_1": null,
+      "passage_qa": null,
+      "summarization_r1": null,
+      "code_completion": null
+    },
+    {
+      "scheme": "WHT + Asymmetric QJL (4-bit)",
+      "bit_rate": 5.0,
+      "compression_ratio": 3.2,
+      "wikitext_ppl": 23.951941253546007,
+      "hellaswag_acc": 40.0,
+      "niah_512_mid": 100.0,
+      "nn_recall_1": null,
+      "passage_qa": 0.0,
+      "summarization_r1": 0.0,
+      "code_completion": 5.0
+    },
+    {
+      "scheme": "MC-TurboQuant (4-bit)",
+      "bit_rate": 5.0,
+      "compression_ratio": 3.2,
+      "wikitext_ppl": 23.951941253546007,
+      "hellaswag_acc": 40.0,
+      "niah_512_mid": 100.0,
+      "nn_recall_1": null,
+      "passage_qa": null,
+      "summarization_r1": null,
+      "code_completion": null
+    },
+    {
+      "scheme": "Outlier Channel Splitting (2.5-bit)",
+      "bit_rate": 3.44,
+      "compression_ratio": 4.65,
+      "wikitext_ppl": 4.675709316211911,
+      "hellaswag_acc": null,
+      "niah_512_mid": null,
+      "nn_recall_1": null,
+      "passage_qa": 5.0,
+      "summarization_r1": 0.0,
+      "code_completion": 5.0
+    },
+    {
+      "scheme": "Outlier Channel Splitting (3.5-bit)",
+      "bit_rate": 4.44,
+      "compression_ratio": 3.6,
+      "wikitext_ppl": 5.560472723307226,
+      "hellaswag_acc": null,
+      "niah_512_mid": null,
+      "nn_recall_1": null,
+      "passage_qa": 0.0,
+      "summarization_r1": 0.0,
+      "code_completion": 5.0
+    }
+  ]
+}

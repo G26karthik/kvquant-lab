@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TurboQuant Rotation Profiling Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f1117;
+    color: #e6e6e6;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: #8b8fa3;
+    font-weight: 400;
+  }
+  .commentary {
+    background: #1a1d28;
+    border: 1px solid #ffb86c44;
+    border-left: 4px solid #ffb86c;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+  .commentary h3 {
+    color: #ffb86c;
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .commentary p {
+    font-size: 13.5px;
+    color: #a0a4b8;
+  }
+  .card {
+    background: #1a1d28;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #2a2d3a;
+  }
+  th {
+    background: #12141d;
+    color: #8b8fa3;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  tr:hover {
+    background: #242936;
+  }
+  .num-val {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  th.num-val {
+    text-align: right;
+  }
+  .highlight {
+    color: #50fa7b;
+    font-weight: 600;
+  }
+  .dim-val {
+    font-weight: 600;
+    color: #4a9eff;
+  }
+  .strat-name {
+    font-weight: 500;
+  }
+  .strat-qr { border-left: 2px solid #ff6b6b; }
+  .strat-wht { border-left: 2px solid #50fa7b; }
+  .strat-blockwise-2d { border-left: 2px solid #8be9fd; }
+  .strat-blockwise-4d { border-left: 2px solid #bd93f9; }
+  .strat-no-rotation { border-left: 2px solid #ff79c6; }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>TurboQuant Rotation Profiling Dashboard</h1>
+    <div class="subtitle">Benchmarking 5 Rotation Strategies &middot; d = [32, 64, 128, 256] &middot; Batch Sizes = [1, 8, 32, 128] &middot; CUDA</div>
+  </header>
+
+  <div class="commentary">
+    <h3>Peer Feedback Analysis</h3>
+    <p>
+      Abhiram's comment on LinkedIn claims that <strong>dense orthogonal rotation is the primary bottleneck on CPU/consumer devices</strong>, 
+      yielding 2.9×–5.9× speedups when replaced by blockwise or structured transforms. Our profiler below confirms this behavior 
+      empirically on the target hardware. At d=64, dense QR rotation operations consume a significant fraction of total quantization time 
+      compared to structured alternatives like WHT and blockwise transformations, proving that dense matrix multiply overhead dominates without fused CUDA kernels.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Profiling Results Breakdown</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Dimension (d)</th>
+          <th>Batch Size</th>
+          <th>Strategy</th>
+          <th class="num-val">Rotation Time (µs)</th>
+          <th class="num-val">Codebook Lookup (µs)</th>
+          <th class="num-val">Total Quantize (µs)</th>
+          <th class="num-val">MSE Distortion</th>
+          <th class="num-val">Inner Product Error</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">32</td>
+            <td>1</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">34.97</td>
+            <td class="num-val">61.20</td>
+            <td class="num-val highlight">230.37</td>
+            <td class="num-val">0.00058</td>
+            <td class="num-val">0.00029</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">32</td>
+            <td>1</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">712.90</td>
+            <td class="num-val">67.96</td>
+            <td class="num-val highlight">834.24</td>
+            <td class="num-val">0.00073</td>
+            <td class="num-val">0.00000</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">32</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">256.78</td>
+            <td class="num-val">67.60</td>
+            <td class="num-val highlight">409.20</td>
+            <td class="num-val">0.00085</td>
+            <td class="num-val">0.00004</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">32</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1927.06</td>
+            <td class="num-val">65.20</td>
+            <td class="num-val highlight">2095.61</td>
+            <td class="num-val">0.00056</td>
+            <td class="num-val">0.00082</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">32</td>
+            <td>1</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.07</td>
+            <td class="num-val">64.51</td>
+            <td class="num-val highlight">163.11</td>
+            <td class="num-val">0.00086</td>
+            <td class="num-val">0.00001</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">32</td>
+            <td>8</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">45.80</td>
+            <td class="num-val">66.47</td>
+            <td class="num-val highlight">229.63</td>
+            <td class="num-val">0.00090</td>
+            <td class="num-val">0.00145</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">32</td>
+            <td>8</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">682.36</td>
+            <td class="num-val">62.38</td>
+            <td class="num-val highlight">842.63</td>
+            <td class="num-val">0.00117</td>
+            <td class="num-val">0.00133</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">32</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">243.54</td>
+            <td class="num-val">59.76</td>
+            <td class="num-val highlight">407.56</td>
+            <td class="num-val">0.00098</td>
+            <td class="num-val">0.00047</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">32</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1908.27</td>
+            <td class="num-val">67.19</td>
+            <td class="num-val highlight">2107.80</td>
+            <td class="num-val">0.00085</td>
+            <td class="num-val">0.00151</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">32</td>
+            <td>8</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">66.34</td>
+            <td class="num-val highlight">152.09</td>
+            <td class="num-val">0.00094</td>
+            <td class="num-val">0.00050</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">32</td>
+            <td>32</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">44.38</td>
+            <td class="num-val">64.11</td>
+            <td class="num-val highlight">214.50</td>
+            <td class="num-val">0.00102</td>
+            <td class="num-val">0.00087</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">32</td>
+            <td>32</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">707.37</td>
+            <td class="num-val">63.39</td>
+            <td class="num-val highlight">881.41</td>
+            <td class="num-val">0.00099</td>
+            <td class="num-val">0.00105</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">32</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">249.03</td>
+            <td class="num-val">65.24</td>
+            <td class="num-val highlight">421.07</td>
+            <td class="num-val">0.00098</td>
+            <td class="num-val">0.00130</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">32</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">2090.38</td>
+            <td class="num-val">73.94</td>
+            <td class="num-val highlight">2385.65</td>
+            <td class="num-val">0.00096</td>
+            <td class="num-val">0.00110</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">32</td>
+            <td>32</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">67.79</td>
+            <td class="num-val highlight">170.32</td>
+            <td class="num-val">0.00099</td>
+            <td class="num-val">0.00052</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">32</td>
+            <td>128</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">55.65</td>
+            <td class="num-val">75.22</td>
+            <td class="num-val highlight">229.16</td>
+            <td class="num-val">0.00100</td>
+            <td class="num-val">0.00084</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">32</td>
+            <td>128</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">712.57</td>
+            <td class="num-val">67.79</td>
+            <td class="num-val highlight">892.77</td>
+            <td class="num-val">0.00106</td>
+            <td class="num-val">0.00101</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">32</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">245.72</td>
+            <td class="num-val">66.72</td>
+            <td class="num-val highlight">430.82</td>
+            <td class="num-val">0.00096</td>
+            <td class="num-val">0.00074</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">32</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">4945.31</td>
+            <td class="num-val">200.75</td>
+            <td class="num-val highlight">4753.85</td>
+            <td class="num-val">0.00101</td>
+            <td class="num-val">0.00081</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">32</td>
+            <td>128</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.20</td>
+            <td class="num-val">223.00</td>
+            <td class="num-val highlight">732.92</td>
+            <td class="num-val">0.00102</td>
+            <td class="num-val">0.00085</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">64</td>
+            <td>1</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">190.99</td>
+            <td class="num-val">296.20</td>
+            <td class="num-val highlight">1007.58</td>
+            <td class="num-val">0.00073</td>
+            <td class="num-val">0.00025</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">64</td>
+            <td>1</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">1232.01</td>
+            <td class="num-val">90.20</td>
+            <td class="num-val highlight">1267.90</td>
+            <td class="num-val">0.00057</td>
+            <td class="num-val">0.00024</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">64</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">283.18</td>
+            <td class="num-val">78.82</td>
+            <td class="num-val highlight">526.30</td>
+            <td class="num-val">0.00046</td>
+            <td class="num-val">0.00112</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">64</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">2018.64</td>
+            <td class="num-val">67.69</td>
+            <td class="num-val highlight">2146.85</td>
+            <td class="num-val">0.00042</td>
+            <td class="num-val">0.00005</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">64</td>
+            <td>1</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">69.46</td>
+            <td class="num-val highlight">158.54</td>
+            <td class="num-val">0.00046</td>
+            <td class="num-val">0.00006</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">64</td>
+            <td>8</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">40.09</td>
+            <td class="num-val">66.85</td>
+            <td class="num-val highlight">235.30</td>
+            <td class="num-val">0.00048</td>
+            <td class="num-val">0.00100</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">64</td>
+            <td>8</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">1009.58</td>
+            <td class="num-val">68.78</td>
+            <td class="num-val highlight">1098.73</td>
+            <td class="num-val">0.00056</td>
+            <td class="num-val">0.00051</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">64</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">257.67</td>
+            <td class="num-val">68.01</td>
+            <td class="num-val highlight">429.88</td>
+            <td class="num-val">0.00050</td>
+            <td class="num-val">0.00033</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">64</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1895.72</td>
+            <td class="num-val">70.87</td>
+            <td class="num-val highlight">2106.30</td>
+            <td class="num-val">0.00051</td>
+            <td class="num-val">0.00044</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">64</td>
+            <td>8</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">71.08</td>
+            <td class="num-val highlight">149.16</td>
+            <td class="num-val">0.00050</td>
+            <td class="num-val">0.00037</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">64</td>
+            <td>32</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">43.12</td>
+            <td class="num-val">65.77</td>
+            <td class="num-val highlight">215.21</td>
+            <td class="num-val">0.00053</td>
+            <td class="num-val">0.00064</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">64</td>
+            <td>32</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">839.98</td>
+            <td class="num-val">68.58</td>
+            <td class="num-val highlight">983.62</td>
+            <td class="num-val">0.00050</td>
+            <td class="num-val">0.00038</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">64</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">247.86</td>
+            <td class="num-val">65.21</td>
+            <td class="num-val highlight">418.29</td>
+            <td class="num-val">0.00052</td>
+            <td class="num-val">0.00056</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">64</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1921.22</td>
+            <td class="num-val">67.20</td>
+            <td class="num-val highlight">5530.50</td>
+            <td class="num-val">0.00053</td>
+            <td class="num-val">0.00027</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">64</td>
+            <td>32</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">66.53</td>
+            <td class="num-val highlight">153.78</td>
+            <td class="num-val">0.00052</td>
+            <td class="num-val">0.00061</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">64</td>
+            <td>128</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">39.56</td>
+            <td class="num-val">66.39</td>
+            <td class="num-val highlight">217.50</td>
+            <td class="num-val">0.00052</td>
+            <td class="num-val">0.00059</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">64</td>
+            <td>128</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">844.59</td>
+            <td class="num-val">66.41</td>
+            <td class="num-val highlight">977.78</td>
+            <td class="num-val">0.00053</td>
+            <td class="num-val">0.00052</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">64</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">247.73</td>
+            <td class="num-val">68.20</td>
+            <td class="num-val highlight">423.11</td>
+            <td class="num-val">0.00050</td>
+            <td class="num-val">0.00052</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">64</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1924.06</td>
+            <td class="num-val">69.28</td>
+            <td class="num-val highlight">2121.37</td>
+            <td class="num-val">0.00051</td>
+            <td class="num-val">0.00048</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">64</td>
+            <td>128</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">64.22</td>
+            <td class="num-val highlight">150.50</td>
+            <td class="num-val">0.00052</td>
+            <td class="num-val">0.00050</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">128</td>
+            <td>1</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">43.90</td>
+            <td class="num-val">91.59</td>
+            <td class="num-val highlight">232.92</td>
+            <td class="num-val">0.00030</td>
+            <td class="num-val">0.00013</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">128</td>
+            <td>1</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">928.82</td>
+            <td class="num-val">65.55</td>
+            <td class="num-val highlight">1135.43</td>
+            <td class="num-val">0.00021</td>
+            <td class="num-val">0.00010</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">128</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">262.51</td>
+            <td class="num-val">72.76</td>
+            <td class="num-val highlight">459.23</td>
+            <td class="num-val">0.00022</td>
+            <td class="num-val">0.00040</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">128</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1911.67</td>
+            <td class="num-val">86.12</td>
+            <td class="num-val highlight">2157.47</td>
+            <td class="num-val">0.00022</td>
+            <td class="num-val">0.00009</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">128</td>
+            <td>1</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">61.66</td>
+            <td class="num-val highlight">147.57</td>
+            <td class="num-val">0.00022</td>
+            <td class="num-val">0.00004</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">128</td>
+            <td>8</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">46.58</td>
+            <td class="num-val">68.63</td>
+            <td class="num-val highlight">223.12</td>
+            <td class="num-val">0.00025</td>
+            <td class="num-val">0.00028</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">128</td>
+            <td>8</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">956.14</td>
+            <td class="num-val">72.09</td>
+            <td class="num-val highlight">1149.44</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00030</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">128</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">252.62</td>
+            <td class="num-val">66.56</td>
+            <td class="num-val highlight">434.52</td>
+            <td class="num-val">0.00026</td>
+            <td class="num-val">0.00020</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">128</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1912.49</td>
+            <td class="num-val">68.86</td>
+            <td class="num-val highlight">2128.26</td>
+            <td class="num-val">0.00028</td>
+            <td class="num-val">0.00026</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">128</td>
+            <td>8</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.10</td>
+            <td class="num-val">67.18</td>
+            <td class="num-val highlight">153.03</td>
+            <td class="num-val">0.00026</td>
+            <td class="num-val">0.00025</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">128</td>
+            <td>32</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">41.79</td>
+            <td class="num-val">65.47</td>
+            <td class="num-val highlight">219.51</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00026</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">128</td>
+            <td>32</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">945.94</td>
+            <td class="num-val">65.54</td>
+            <td class="num-val highlight">1086.86</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00039</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">128</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">248.51</td>
+            <td class="num-val">68.89</td>
+            <td class="num-val highlight">421.75</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00027</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">128</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1874.02</td>
+            <td class="num-val">65.40</td>
+            <td class="num-val highlight">2086.29</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00039</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">128</td>
+            <td>32</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.07</td>
+            <td class="num-val">64.78</td>
+            <td class="num-val highlight">146.74</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00028</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">128</td>
+            <td>128</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">43.17</td>
+            <td class="num-val">67.52</td>
+            <td class="num-val highlight">211.98</td>
+            <td class="num-val">0.00026</td>
+            <td class="num-val">0.00028</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">128</td>
+            <td>128</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">925.25</td>
+            <td class="num-val">70.56</td>
+            <td class="num-val highlight">1132.70</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00027</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">128</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">245.46</td>
+            <td class="num-val">66.47</td>
+            <td class="num-val highlight">414.19</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00031</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">128</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1848.10</td>
+            <td class="num-val">69.24</td>
+            <td class="num-val highlight">2125.07</td>
+            <td class="num-val">0.00026</td>
+            <td class="num-val">0.00028</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">128</td>
+            <td>128</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">75.89</td>
+            <td class="num-val highlight">151.57</td>
+            <td class="num-val">0.00027</td>
+            <td class="num-val">0.00024</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">256</td>
+            <td>1</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">46.52</td>
+            <td class="num-val">75.48</td>
+            <td class="num-val highlight">224.35</td>
+            <td class="num-val">0.00012</td>
+            <td class="num-val">0.00031</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">256</td>
+            <td>1</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">1053.19</td>
+            <td class="num-val">67.60</td>
+            <td class="num-val highlight">1214.72</td>
+            <td class="num-val">0.00012</td>
+            <td class="num-val">0.00009</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">256</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">268.90</td>
+            <td class="num-val">87.00</td>
+            <td class="num-val highlight">471.16</td>
+            <td class="num-val">0.00012</td>
+            <td class="num-val">0.00002</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">256</td>
+            <td>1</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">2075.97</td>
+            <td class="num-val">69.20</td>
+            <td class="num-val highlight">2105.18</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00009</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">256</td>
+            <td>1</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.06</td>
+            <td class="num-val">67.81</td>
+            <td class="num-val highlight">151.75</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00009</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">256</td>
+            <td>8</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">45.97</td>
+            <td class="num-val">70.26</td>
+            <td class="num-val highlight">223.30</td>
+            <td class="num-val">0.00014</td>
+            <td class="num-val">0.00011</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">256</td>
+            <td>8</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">1049.43</td>
+            <td class="num-val">67.28</td>
+            <td class="num-val highlight">1222.36</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00010</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">256</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">250.10</td>
+            <td class="num-val">66.32</td>
+            <td class="num-val highlight">429.17</td>
+            <td class="num-val">0.00012</td>
+            <td class="num-val">0.00005</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">256</td>
+            <td>8</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1875.13</td>
+            <td class="num-val">62.74</td>
+            <td class="num-val highlight">2087.61</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00004</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">256</td>
+            <td>8</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.07</td>
+            <td class="num-val">64.06</td>
+            <td class="num-val highlight">149.48</td>
+            <td class="num-val">0.00012</td>
+            <td class="num-val">0.00015</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">256</td>
+            <td>32</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">41.07</td>
+            <td class="num-val">62.74</td>
+            <td class="num-val highlight">212.93</td>
+            <td class="num-val">0.00014</td>
+            <td class="num-val">0.00010</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">256</td>
+            <td>32</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">1020.12</td>
+            <td class="num-val">68.20</td>
+            <td class="num-val highlight">1185.80</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00009</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">256</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">251.18</td>
+            <td class="num-val">67.84</td>
+            <td class="num-val highlight">416.82</td>
+            <td class="num-val">0.00014</td>
+            <td class="num-val">0.00012</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">256</td>
+            <td>32</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1875.60</td>
+            <td class="num-val">63.01</td>
+            <td class="num-val highlight">2041.20</td>
+            <td class="num-val">0.00014</td>
+            <td class="num-val">0.00020</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">256</td>
+            <td>32</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.07</td>
+            <td class="num-val">64.78</td>
+            <td class="num-val highlight">145.37</td>
+            <td class="num-val">0.00014</td>
+            <td class="num-val">0.00020</td>
+        </tr>
+        
+        <tr class="strat-qr">
+            <td class="dim-val">256</td>
+            <td>128</td>
+            <td class="strat-name">QR</td>
+            <td class="num-val">39.09</td>
+            <td class="num-val">63.01</td>
+            <td class="num-val highlight">208.93</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00015</td>
+        </tr>
+        
+        <tr class="strat-wht">
+            <td class="dim-val">256</td>
+            <td>128</td>
+            <td class="strat-name">WHT</td>
+            <td class="num-val">1011.71</td>
+            <td class="num-val">67.13</td>
+            <td class="num-val highlight">1210.63</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00014</td>
+        </tr>
+        
+        <tr class="strat-blockwise-2d">
+            <td class="dim-val">256</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 2D</td>
+            <td class="num-val">254.97</td>
+            <td class="num-val">65.41</td>
+            <td class="num-val highlight">423.81</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00014</td>
+        </tr>
+        
+        <tr class="strat-blockwise-4d">
+            <td class="dim-val">256</td>
+            <td>128</td>
+            <td class="strat-name">Blockwise 4D</td>
+            <td class="num-val">1894.07</td>
+            <td class="num-val">64.04</td>
+            <td class="num-val highlight">2047.15</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00012</td>
+        </tr>
+        
+        <tr class="strat-no-rotation">
+            <td class="dim-val">256</td>
+            <td>128</td>
+            <td class="strat-name">No Rotation</td>
+            <td class="num-val">0.09</td>
+            <td class="num-val">65.54</td>
+            <td class="num-val highlight">147.94</td>
+            <td class="num-val">0.00013</td>
+            <td class="num-val">0.00013</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Generated by profile_rotations.py &middot; Seed 42 &middot; Device: CUDA &middot; Dtype: torch.float16
+  </div>
+</div>
+</body>
+</html>

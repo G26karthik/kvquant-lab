@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MC Checkpoint vs Independent Compressor Ablation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f1117;
+    color: #e6e6e6;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: #8b8fa3;
+    font-weight: 400;
+  }
+  .commentary {
+    background: #1a1d28;
+    border: 1px solid #bd93f944;
+    border-left: 4px solid #bd93f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-size: 13.5px;
+  }
+  .card {
+    background: #1a1d28;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #2a2d3a;
+  }
+  th {
+    background: #12141d;
+    color: #8b8fa3;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  .num-val {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  th.num-val {
+    text-align: right;
+  }
+  .highlight {
+    color: #50fa7b;
+    font-weight: 600;
+  }
+  .dim-val {
+    font-weight: 600;
+    color: #8be9fd;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Memory Caching Compressor Ablation Dashboard</h1>
+    <div class="subtitle">Quantitative Evaluation of Checkpoint vs Independent Memory Compressors &middot; GPT-2 Medium</div>
+  </header>
+
+  <div class="commentary">
+    <strong>Section 3.4 of arXiv:2602.24281</strong> discusses this design choice explicitly but provides only qualitative guidance (<em>"each has its own advantages"</em>).
+    This report provides the first quantitative comparison at d=64.
+    We compare:
+    <ul>
+      <li><strong>Checkpoint (Stateful)</strong>: Warm-starts each segment's memory from the previous: M^(s)_0 = M^(s-1)_L.</li>
+      <li><strong>Independent (Stateless)</strong>: Re-initializes memory from scratch for each segment: M^(s)_0 = 0.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Performance &amp; Recall Metrics</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Strategy</th>
+          <th class="num-val">L</th>
+          <th class="num-val">Early</th>
+          <th class="num-val">Middle</th>
+          <th class="num-val" style="border-right: 1px solid #2a2d3a;">Late</th>
+          <th class="num-val">Avg Perplexity</th>
+          <th class="num-val">Avg Throughput</th>
+          <th class="num-val">Cache Footprint</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+            <td class="dim-val" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">Checkpoint (Stateful/Warm-start)</td>
+            <td class="num-val">256</td>
+            <td class="num-val">0%</td>
+            <td class="num-val">0%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">0%</td>
+            <td class="num-val highlight" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">17.0643</td>
+            <td class="num-val" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">27.96</td>
+            <td class="num-val" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">13056.00 KB</td>
+        </tr>
+        <tr>
+            <td class="num-val">512</td>
+            <td class="num-val">0%</td>
+            <td class="num-val">0%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">0%</td>
+        </tr>
+        <tr>
+            <td class="num-val">768</td>
+            <td class="num-val">0%</td>
+            <td class="num-val">0%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">0%</td>
+        </tr>
+        <tr style="border-bottom: 2px solid #2a2d3a;">
+            <td class="num-val">1024</td>
+            <td class="num-val">0%</td>
+            <td class="num-val">0%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">0%</td>
+        </tr>
+        
+        <tr>
+            <td class="dim-val" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">Independent (Stateless/Fresh)</td>
+            <td class="num-val">256</td>
+            <td class="num-val">100%</td>
+            <td class="num-val">100%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">100%</td>
+            <td class="num-val highlight" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">2.1344</td>
+            <td class="num-val" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">30.63</td>
+            <td class="num-val" rowspan="4" style="vertical-align: middle; border-bottom: 2px solid #2a2d3a;">6912.00 KB</td>
+        </tr>
+        <tr>
+            <td class="num-val">512</td>
+            <td class="num-val">100%</td>
+            <td class="num-val">100%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">100%</td>
+        </tr>
+        <tr>
+            <td class="num-val">768</td>
+            <td class="num-val">100%</td>
+            <td class="num-val">100%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">80%</td>
+        </tr>
+        <tr style="border-bottom: 2px solid #2a2d3a;">
+            <td class="num-val">1024</td>
+            <td class="num-val">100%</td>
+            <td class="num-val">100%</td>
+            <td class="num-val" style="border-right: 1px solid #2a2d3a;">100%</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Generated by mc_compressor_ablation.py &middot; GPT-2 Medium &middot; Segment Size: 64 &middot; Seed: 42
+  </div>
+</div>
+</body>
+</html>

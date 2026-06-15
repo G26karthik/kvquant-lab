@@ -1,0 +1,56 @@
+{
+  "flat_turboquant": {
+    "2": {
+      "recall_1": 2.8000000000000003,
+      "recall_10": 9.8,
+      "mean_rank": 511.448,
+      "compression_ratio": 5.333333333333333
+    },
+    "3": {
+      "recall_1": 14.000000000000002,
+      "recall_10": 48.0,
+      "mean_rank": 54.934,
+      "compression_ratio": 4.0
+    },
+    "4": {
+      "recall_1": 38.800000000000004,
+      "recall_10": 87.6,
+      "mean_rank": 5.754,
+      "compression_ratio": 3.2
+    }
+  },
+  "wht_asym": {
+    "2": {
+      "recall_1": 22.400000000000002,
+      "recall_10": 63.6,
+      "mean_rank": 18.526,
+      "compression_ratio": 6.4
+    },
+    "3": {
+      "recall_1": 46.400000000000006,
+      "recall_10": 94.39999999999999,
+      "mean_rank": 3.318,
+      "compression_ratio": 4.571428571428571
+    },
+    "4": {
+      "recall_1": 67.4,
+      "recall_10": 99.8,
+      "mean_rank": 1.676,
+      "compression_ratio": 3.5555555555555554
+    }
+  },
+  "outlier_split": {
+    "2.5": {
+      "recall_1": 29.799999999999997,
+      "recall_10": 73.8,
+      "mean_rank": 14.034,
+      "compression_ratio": 5.818181818181818
+    },
+    "3.5": {
+      "recall_1": 48.199999999999996,
+      "recall_10": 94.8,
+      "mean_rank": 3.25,
+      "compression_ratio": 4.266666666666667
+    }
+  }
+}

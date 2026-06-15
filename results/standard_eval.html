@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kvquant-lab: Standard Evaluation Suite</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f1117;
+    color: #e6e6e6;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: #8b8fa3;
+    font-weight: 400;
+  }
+  .card {
+    background: #1a1d28;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  .card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a9eff;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #2a2d3a;
+  }
+  th {
+    background: #12141d;
+    color: #8b8fa3;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  tr:hover {
+    background: #242936;
+  }
+  .num-val {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  th.num-val {
+    text-align: right;
+  }
+  .highlight {
+    color: #50fa7b;
+    font-weight: 600;
+  }
+  .dim-val {
+    font-weight: 600;
+    color: #4a9eff;
+  }
+  .niah-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 20px;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>kvquant-lab: Standard Evaluation Suite Dashboard</h1>
+    <div class="subtitle">WikiText-2 Strided sliding window perplexity &middot; HellaSwag log-likelihood accuracy &middot; Long-context Needle-In-A-Haystack Matrix</div>
+  </header>
+
+  <div class="card">
+    <h2>Eval A &amp; B: Language Modeling and Downstream Task Accuracy</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Quantization Configuration</th>
+          <th class="num-val">WikiText-2 Perplexity (1024-ctx, 512-stride)</th>
+          <th class="num-val">HellaSwag Accuracy (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+            <td style="color:#ffffff;font-weight:600;">Baseline FP16</td>
+            <td class="num-val highlight">19.0318</td>
+            <td class="num-val">40.00%</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ffffff;font-weight:600;">Original TurboQuant (3-bit)</td>
+            <td class="num-val highlight">89.3387</td>
+            <td class="num-val">37.00%</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ffffff;font-weight:600;">Original TurboQuant (4-bit)</td>
+            <td class="num-val highlight">24.7132</td>
+            <td class="num-val">38.00%</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ffffff;font-weight:600;">WHT + Asymmetric QJL (3-bit)</td>
+            <td class="num-val highlight">76.9267</td>
+            <td class="num-val">42.00%</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ffffff;font-weight:600;">WHT + Asymmetric QJL (4-bit)</td>
+            <td class="num-val highlight">23.9519</td>
+            <td class="num-val">40.00%</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Eval C: Long-Context Needle-In-A-Haystack Recall Accuracy Matrices</h2>
+  <div class="niah-grid">
+    
+        <div class="card">
+            <h3>Baseline FP16</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h3>Original TurboQuant Flat (4-bit)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">80%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h3>WHT + Asymmetric QJL Flat (4-bit)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h3>MC-TurboQuant (64-seg, WHT-compressed, 4-bit)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+  </div>
+
+  <div class="footer">
+    Generated by standard_eval.py &middot; GPT-2 Medium &middot; Device: CUDA
+  </div>
+</div>
+</body>
+</html>

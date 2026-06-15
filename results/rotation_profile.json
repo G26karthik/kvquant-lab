@@ -1,0 +1,802 @@
+[
+  {
+    "dim": 32,
+    "batch_size": 1,
+    "strategy": "QR",
+    "rotation_time_us": 34.966,
+    "codebook_lookup_time_us": 61.197,
+    "total_quantize_time_us": 230.37,
+    "mse_distortion": 0.000584,
+    "inner_product_error": 0.000292
+  },
+  {
+    "dim": 32,
+    "batch_size": 1,
+    "strategy": "WHT",
+    "rotation_time_us": 712.896,
+    "codebook_lookup_time_us": 67.963,
+    "total_quantize_time_us": 834.236,
+    "mse_distortion": 0.000731,
+    "inner_product_error": 0.0
+  },
+  {
+    "dim": 32,
+    "batch_size": 1,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 256.78,
+    "codebook_lookup_time_us": 67.596,
+    "total_quantize_time_us": 409.196,
+    "mse_distortion": 0.00085,
+    "inner_product_error": 4.3e-05
+  },
+  {
+    "dim": 32,
+    "batch_size": 1,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1927.059,
+    "codebook_lookup_time_us": 65.2,
+    "total_quantize_time_us": 2095.61,
+    "mse_distortion": 0.000565,
+    "inner_product_error": 0.000816
+  },
+  {
+    "dim": 32,
+    "batch_size": 1,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.068,
+    "codebook_lookup_time_us": 64.511,
+    "total_quantize_time_us": 163.112,
+    "mse_distortion": 0.000864,
+    "inner_product_error": 1.2e-05
+  },
+  {
+    "dim": 32,
+    "batch_size": 8,
+    "strategy": "QR",
+    "rotation_time_us": 45.804,
+    "codebook_lookup_time_us": 66.468,
+    "total_quantize_time_us": 229.634,
+    "mse_distortion": 0.000901,
+    "inner_product_error": 0.001452
+  },
+  {
+    "dim": 32,
+    "batch_size": 8,
+    "strategy": "WHT",
+    "rotation_time_us": 682.363,
+    "codebook_lookup_time_us": 62.378,
+    "total_quantize_time_us": 842.633,
+    "mse_distortion": 0.001167,
+    "inner_product_error": 0.001329
+  },
+  {
+    "dim": 32,
+    "batch_size": 8,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 243.537,
+    "codebook_lookup_time_us": 59.755,
+    "total_quantize_time_us": 407.555,
+    "mse_distortion": 0.000977,
+    "inner_product_error": 0.000466
+  },
+  {
+    "dim": 32,
+    "batch_size": 8,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1908.269,
+    "codebook_lookup_time_us": 67.188,
+    "total_quantize_time_us": 2107.803,
+    "mse_distortion": 0.000845,
+    "inner_product_error": 0.001513
+  },
+  {
+    "dim": 32,
+    "batch_size": 8,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.06,
+    "codebook_lookup_time_us": 66.34,
+    "total_quantize_time_us": 152.094,
+    "mse_distortion": 0.000945,
+    "inner_product_error": 0.000496
+  },
+  {
+    "dim": 32,
+    "batch_size": 32,
+    "strategy": "QR",
+    "rotation_time_us": 44.376,
+    "codebook_lookup_time_us": 64.112,
+    "total_quantize_time_us": 214.505,
+    "mse_distortion": 0.001019,
+    "inner_product_error": 0.000867
+  },
+  {
+    "dim": 32,
+    "batch_size": 32,
+    "strategy": "WHT",
+    "rotation_time_us": 707.37,
+    "codebook_lookup_time_us": 63.389,
+    "total_quantize_time_us": 881.407,
+    "mse_distortion": 0.000987,
+    "inner_product_error": 0.001055
+  },
+  {
+    "dim": 32,
+    "batch_size": 32,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 249.025,
+    "codebook_lookup_time_us": 65.243,
+    "total_quantize_time_us": 421.072,
+    "mse_distortion": 0.000978,
+    "inner_product_error": 0.001304
+  },
+  {
+    "dim": 32,
+    "batch_size": 32,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 2090.382,
+    "codebook_lookup_time_us": 73.938,
+    "total_quantize_time_us": 2385.653,
+    "mse_distortion": 0.000959,
+    "inner_product_error": 0.001101
+  },
+  {
+    "dim": 32,
+    "batch_size": 32,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.062,
+    "codebook_lookup_time_us": 67.789,
+    "total_quantize_time_us": 170.318,
+    "mse_distortion": 0.000993,
+    "inner_product_error": 0.00052
+  },
+  {
+    "dim": 32,
+    "batch_size": 128,
+    "strategy": "QR",
+    "rotation_time_us": 55.646,
+    "codebook_lookup_time_us": 75.217,
+    "total_quantize_time_us": 229.159,
+    "mse_distortion": 0.001004,
+    "inner_product_error": 0.000844
+  },
+  {
+    "dim": 32,
+    "batch_size": 128,
+    "strategy": "WHT",
+    "rotation_time_us": 712.566,
+    "codebook_lookup_time_us": 67.786,
+    "total_quantize_time_us": 892.766,
+    "mse_distortion": 0.001064,
+    "inner_product_error": 0.001009
+  },
+  {
+    "dim": 32,
+    "batch_size": 128,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 245.722,
+    "codebook_lookup_time_us": 66.715,
+    "total_quantize_time_us": 430.823,
+    "mse_distortion": 0.000958,
+    "inner_product_error": 0.000743
+  },
+  {
+    "dim": 32,
+    "batch_size": 128,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 4945.307,
+    "codebook_lookup_time_us": 200.752,
+    "total_quantize_time_us": 4753.849,
+    "mse_distortion": 0.001008,
+    "inner_product_error": 0.000809
+  },
+  {
+    "dim": 32,
+    "batch_size": 128,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.198,
+    "codebook_lookup_time_us": 222.999,
+    "total_quantize_time_us": 732.916,
+    "mse_distortion": 0.001023,
+    "inner_product_error": 0.000852
+  },
+  {
+    "dim": 64,
+    "batch_size": 1,
+    "strategy": "QR",
+    "rotation_time_us": 190.985,
+    "codebook_lookup_time_us": 296.204,
+    "total_quantize_time_us": 1007.577,
+    "mse_distortion": 0.000731,
+    "inner_product_error": 0.000248
+  },
+  {
+    "dim": 64,
+    "batch_size": 1,
+    "strategy": "WHT",
+    "rotation_time_us": 1232.009,
+    "codebook_lookup_time_us": 90.205,
+    "total_quantize_time_us": 1267.903,
+    "mse_distortion": 0.00057,
+    "inner_product_error": 0.000243
+  },
+  {
+    "dim": 64,
+    "batch_size": 1,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 283.182,
+    "codebook_lookup_time_us": 78.823,
+    "total_quantize_time_us": 526.302,
+    "mse_distortion": 0.000455,
+    "inner_product_error": 0.001121
+  },
+  {
+    "dim": 64,
+    "batch_size": 1,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 2018.638,
+    "codebook_lookup_time_us": 67.69,
+    "total_quantize_time_us": 2146.848,
+    "mse_distortion": 0.000424,
+    "inner_product_error": 4.5e-05
+  },
+  {
+    "dim": 64,
+    "batch_size": 1,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.058,
+    "codebook_lookup_time_us": 69.459,
+    "total_quantize_time_us": 158.544,
+    "mse_distortion": 0.00046,
+    "inner_product_error": 6.5e-05
+  },
+  {
+    "dim": 64,
+    "batch_size": 8,
+    "strategy": "QR",
+    "rotation_time_us": 40.086,
+    "codebook_lookup_time_us": 66.854,
+    "total_quantize_time_us": 235.298,
+    "mse_distortion": 0.000482,
+    "inner_product_error": 0.000996
+  },
+  {
+    "dim": 64,
+    "batch_size": 8,
+    "strategy": "WHT",
+    "rotation_time_us": 1009.578,
+    "codebook_lookup_time_us": 68.781,
+    "total_quantize_time_us": 1098.734,
+    "mse_distortion": 0.000559,
+    "inner_product_error": 0.000507
+  },
+  {
+    "dim": 64,
+    "batch_size": 8,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 257.666,
+    "codebook_lookup_time_us": 68.014,
+    "total_quantize_time_us": 429.883,
+    "mse_distortion": 0.000503,
+    "inner_product_error": 0.000328
+  },
+  {
+    "dim": 64,
+    "batch_size": 8,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1895.723,
+    "codebook_lookup_time_us": 70.874,
+    "total_quantize_time_us": 2106.296,
+    "mse_distortion": 0.000507,
+    "inner_product_error": 0.000443
+  },
+  {
+    "dim": 64,
+    "batch_size": 8,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.061,
+    "codebook_lookup_time_us": 71.078,
+    "total_quantize_time_us": 149.165,
+    "mse_distortion": 0.000497,
+    "inner_product_error": 0.000371
+  },
+  {
+    "dim": 64,
+    "batch_size": 32,
+    "strategy": "QR",
+    "rotation_time_us": 43.124,
+    "codebook_lookup_time_us": 65.773,
+    "total_quantize_time_us": 215.207,
+    "mse_distortion": 0.000529,
+    "inner_product_error": 0.000635
+  },
+  {
+    "dim": 64,
+    "batch_size": 32,
+    "strategy": "WHT",
+    "rotation_time_us": 839.98,
+    "codebook_lookup_time_us": 68.581,
+    "total_quantize_time_us": 983.625,
+    "mse_distortion": 0.0005,
+    "inner_product_error": 0.000383
+  },
+  {
+    "dim": 64,
+    "batch_size": 32,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 247.86,
+    "codebook_lookup_time_us": 65.213,
+    "total_quantize_time_us": 418.286,
+    "mse_distortion": 0.000518,
+    "inner_product_error": 0.000559
+  },
+  {
+    "dim": 64,
+    "batch_size": 32,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1921.22,
+    "codebook_lookup_time_us": 67.202,
+    "total_quantize_time_us": 5530.498,
+    "mse_distortion": 0.000529,
+    "inner_product_error": 0.00027
+  },
+  {
+    "dim": 64,
+    "batch_size": 32,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.06,
+    "codebook_lookup_time_us": 66.531,
+    "total_quantize_time_us": 153.785,
+    "mse_distortion": 0.00052,
+    "inner_product_error": 0.000608
+  },
+  {
+    "dim": 64,
+    "batch_size": 128,
+    "strategy": "QR",
+    "rotation_time_us": 39.56,
+    "codebook_lookup_time_us": 66.391,
+    "total_quantize_time_us": 217.505,
+    "mse_distortion": 0.000516,
+    "inner_product_error": 0.000592
+  },
+  {
+    "dim": 64,
+    "batch_size": 128,
+    "strategy": "WHT",
+    "rotation_time_us": 844.594,
+    "codebook_lookup_time_us": 66.406,
+    "total_quantize_time_us": 977.777,
+    "mse_distortion": 0.00053,
+    "inner_product_error": 0.000521
+  },
+  {
+    "dim": 64,
+    "batch_size": 128,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 247.726,
+    "codebook_lookup_time_us": 68.196,
+    "total_quantize_time_us": 423.106,
+    "mse_distortion": 0.000504,
+    "inner_product_error": 0.000521
+  },
+  {
+    "dim": 64,
+    "batch_size": 128,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1924.064,
+    "codebook_lookup_time_us": 69.282,
+    "total_quantize_time_us": 2121.374,
+    "mse_distortion": 0.00051,
+    "inner_product_error": 0.000483
+  },
+  {
+    "dim": 64,
+    "batch_size": 128,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.058,
+    "codebook_lookup_time_us": 64.218,
+    "total_quantize_time_us": 150.505,
+    "mse_distortion": 0.000522,
+    "inner_product_error": 0.000496
+  },
+  {
+    "dim": 128,
+    "batch_size": 1,
+    "strategy": "QR",
+    "rotation_time_us": 43.897,
+    "codebook_lookup_time_us": 91.593,
+    "total_quantize_time_us": 232.92,
+    "mse_distortion": 0.000297,
+    "inner_product_error": 0.000131
+  },
+  {
+    "dim": 128,
+    "batch_size": 1,
+    "strategy": "WHT",
+    "rotation_time_us": 928.816,
+    "codebook_lookup_time_us": 65.553,
+    "total_quantize_time_us": 1135.432,
+    "mse_distortion": 0.000214,
+    "inner_product_error": 0.000102
+  },
+  {
+    "dim": 128,
+    "batch_size": 1,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 262.507,
+    "codebook_lookup_time_us": 72.762,
+    "total_quantize_time_us": 459.226,
+    "mse_distortion": 0.000221,
+    "inner_product_error": 0.0004
+  },
+  {
+    "dim": 128,
+    "batch_size": 1,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1911.666,
+    "codebook_lookup_time_us": 86.119,
+    "total_quantize_time_us": 2157.468,
+    "mse_distortion": 0.000221,
+    "inner_product_error": 8.7e-05
+  },
+  {
+    "dim": 128,
+    "batch_size": 1,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.057,
+    "codebook_lookup_time_us": 61.659,
+    "total_quantize_time_us": 147.573,
+    "mse_distortion": 0.000225,
+    "inner_product_error": 3.7e-05
+  },
+  {
+    "dim": 128,
+    "batch_size": 8,
+    "strategy": "QR",
+    "rotation_time_us": 46.581,
+    "codebook_lookup_time_us": 68.631,
+    "total_quantize_time_us": 223.116,
+    "mse_distortion": 0.000253,
+    "inner_product_error": 0.000283
+  },
+  {
+    "dim": 128,
+    "batch_size": 8,
+    "strategy": "WHT",
+    "rotation_time_us": 956.144,
+    "codebook_lookup_time_us": 72.089,
+    "total_quantize_time_us": 1149.444,
+    "mse_distortion": 0.000268,
+    "inner_product_error": 0.000296
+  },
+  {
+    "dim": 128,
+    "batch_size": 8,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 252.617,
+    "codebook_lookup_time_us": 66.562,
+    "total_quantize_time_us": 434.523,
+    "mse_distortion": 0.000263,
+    "inner_product_error": 0.000199
+  },
+  {
+    "dim": 128,
+    "batch_size": 8,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1912.486,
+    "codebook_lookup_time_us": 68.857,
+    "total_quantize_time_us": 2128.263,
+    "mse_distortion": 0.000277,
+    "inner_product_error": 0.000264
+  },
+  {
+    "dim": 128,
+    "batch_size": 8,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.101,
+    "codebook_lookup_time_us": 67.179,
+    "total_quantize_time_us": 153.033,
+    "mse_distortion": 0.000258,
+    "inner_product_error": 0.000254
+  },
+  {
+    "dim": 128,
+    "batch_size": 32,
+    "strategy": "QR",
+    "rotation_time_us": 41.789,
+    "codebook_lookup_time_us": 65.469,
+    "total_quantize_time_us": 219.51,
+    "mse_distortion": 0.000266,
+    "inner_product_error": 0.000263
+  },
+  {
+    "dim": 128,
+    "batch_size": 32,
+    "strategy": "WHT",
+    "rotation_time_us": 945.944,
+    "codebook_lookup_time_us": 65.539,
+    "total_quantize_time_us": 1086.855,
+    "mse_distortion": 0.000267,
+    "inner_product_error": 0.000391
+  },
+  {
+    "dim": 128,
+    "batch_size": 32,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 248.51,
+    "codebook_lookup_time_us": 68.887,
+    "total_quantize_time_us": 421.752,
+    "mse_distortion": 0.000271,
+    "inner_product_error": 0.000269
+  },
+  {
+    "dim": 128,
+    "batch_size": 32,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1874.024,
+    "codebook_lookup_time_us": 65.398,
+    "total_quantize_time_us": 2086.289,
+    "mse_distortion": 0.000267,
+    "inner_product_error": 0.000393
+  },
+  {
+    "dim": 128,
+    "batch_size": 32,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.072,
+    "codebook_lookup_time_us": 64.783,
+    "total_quantize_time_us": 146.737,
+    "mse_distortion": 0.00027,
+    "inner_product_error": 0.000278
+  },
+  {
+    "dim": 128,
+    "batch_size": 128,
+    "strategy": "QR",
+    "rotation_time_us": 43.171,
+    "codebook_lookup_time_us": 67.522,
+    "total_quantize_time_us": 211.978,
+    "mse_distortion": 0.000261,
+    "inner_product_error": 0.000282
+  },
+  {
+    "dim": 128,
+    "batch_size": 128,
+    "strategy": "WHT",
+    "rotation_time_us": 925.248,
+    "codebook_lookup_time_us": 70.557,
+    "total_quantize_time_us": 1132.701,
+    "mse_distortion": 0.000273,
+    "inner_product_error": 0.000273
+  },
+  {
+    "dim": 128,
+    "batch_size": 128,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 245.462,
+    "codebook_lookup_time_us": 66.468,
+    "total_quantize_time_us": 414.193,
+    "mse_distortion": 0.000266,
+    "inner_product_error": 0.000311
+  },
+  {
+    "dim": 128,
+    "batch_size": 128,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1848.103,
+    "codebook_lookup_time_us": 69.243,
+    "total_quantize_time_us": 2125.068,
+    "mse_distortion": 0.000261,
+    "inner_product_error": 0.000277
+  },
+  {
+    "dim": 128,
+    "batch_size": 128,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.063,
+    "codebook_lookup_time_us": 75.892,
+    "total_quantize_time_us": 151.569,
+    "mse_distortion": 0.000266,
+    "inner_product_error": 0.000237
+  },
+  {
+    "dim": 256,
+    "batch_size": 1,
+    "strategy": "QR",
+    "rotation_time_us": 46.517,
+    "codebook_lookup_time_us": 75.476,
+    "total_quantize_time_us": 224.347,
+    "mse_distortion": 0.000117,
+    "inner_product_error": 0.000313
+  },
+  {
+    "dim": 256,
+    "batch_size": 1,
+    "strategy": "WHT",
+    "rotation_time_us": 1053.194,
+    "codebook_lookup_time_us": 67.599,
+    "total_quantize_time_us": 1214.716,
+    "mse_distortion": 0.000117,
+    "inner_product_error": 9.1e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 1,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 268.905,
+    "codebook_lookup_time_us": 86.995,
+    "total_quantize_time_us": 471.164,
+    "mse_distortion": 0.000117,
+    "inner_product_error": 2.2e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 1,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 2075.974,
+    "codebook_lookup_time_us": 69.198,
+    "total_quantize_time_us": 2105.183,
+    "mse_distortion": 0.000134,
+    "inner_product_error": 8.5e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 1,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.057,
+    "codebook_lookup_time_us": 67.813,
+    "total_quantize_time_us": 151.748,
+    "mse_distortion": 0.000128,
+    "inner_product_error": 8.9e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 8,
+    "strategy": "QR",
+    "rotation_time_us": 45.967,
+    "codebook_lookup_time_us": 70.257,
+    "total_quantize_time_us": 223.304,
+    "mse_distortion": 0.000137,
+    "inner_product_error": 0.00011
+  },
+  {
+    "dim": 256,
+    "batch_size": 8,
+    "strategy": "WHT",
+    "rotation_time_us": 1049.433,
+    "codebook_lookup_time_us": 67.283,
+    "total_quantize_time_us": 1222.356,
+    "mse_distortion": 0.000132,
+    "inner_product_error": 0.000103
+  },
+  {
+    "dim": 256,
+    "batch_size": 8,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 250.098,
+    "codebook_lookup_time_us": 66.323,
+    "total_quantize_time_us": 429.167,
+    "mse_distortion": 0.000123,
+    "inner_product_error": 5.4e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 8,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1875.126,
+    "codebook_lookup_time_us": 62.743,
+    "total_quantize_time_us": 2087.613,
+    "mse_distortion": 0.000134,
+    "inner_product_error": 3.8e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 8,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.07,
+    "codebook_lookup_time_us": 64.06,
+    "total_quantize_time_us": 149.481,
+    "mse_distortion": 0.000123,
+    "inner_product_error": 0.000153
+  },
+  {
+    "dim": 256,
+    "batch_size": 32,
+    "strategy": "QR",
+    "rotation_time_us": 41.069,
+    "codebook_lookup_time_us": 62.743,
+    "total_quantize_time_us": 212.927,
+    "mse_distortion": 0.000136,
+    "inner_product_error": 9.8e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 32,
+    "strategy": "WHT",
+    "rotation_time_us": 1020.118,
+    "codebook_lookup_time_us": 68.2,
+    "total_quantize_time_us": 1185.795,
+    "mse_distortion": 0.000132,
+    "inner_product_error": 8.6e-05
+  },
+  {
+    "dim": 256,
+    "batch_size": 32,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 251.178,
+    "codebook_lookup_time_us": 67.843,
+    "total_quantize_time_us": 416.819,
+    "mse_distortion": 0.000135,
+    "inner_product_error": 0.000121
+  },
+  {
+    "dim": 256,
+    "batch_size": 32,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1875.603,
+    "codebook_lookup_time_us": 63.013,
+    "total_quantize_time_us": 2041.197,
+    "mse_distortion": 0.000138,
+    "inner_product_error": 0.000197
+  },
+  {
+    "dim": 256,
+    "batch_size": 32,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.073,
+    "codebook_lookup_time_us": 64.781,
+    "total_quantize_time_us": 145.373,
+    "mse_distortion": 0.000137,
+    "inner_product_error": 0.000199
+  },
+  {
+    "dim": 256,
+    "batch_size": 128,
+    "strategy": "QR",
+    "rotation_time_us": 39.094,
+    "codebook_lookup_time_us": 63.005,
+    "total_quantize_time_us": 208.932,
+    "mse_distortion": 0.000133,
+    "inner_product_error": 0.000148
+  },
+  {
+    "dim": 256,
+    "batch_size": 128,
+    "strategy": "WHT",
+    "rotation_time_us": 1011.705,
+    "codebook_lookup_time_us": 67.128,
+    "total_quantize_time_us": 1210.627,
+    "mse_distortion": 0.000134,
+    "inner_product_error": 0.000142
+  },
+  {
+    "dim": 256,
+    "batch_size": 128,
+    "strategy": "Blockwise 2D",
+    "rotation_time_us": 254.974,
+    "codebook_lookup_time_us": 65.411,
+    "total_quantize_time_us": 423.805,
+    "mse_distortion": 0.000131,
+    "inner_product_error": 0.000138
+  },
+  {
+    "dim": 256,
+    "batch_size": 128,
+    "strategy": "Blockwise 4D",
+    "rotation_time_us": 1894.066,
+    "codebook_lookup_time_us": 64.044,
+    "total_quantize_time_us": 2047.15,
+    "mse_distortion": 0.000131,
+    "inner_product_error": 0.000124
+  },
+  {
+    "dim": 256,
+    "batch_size": 128,
+    "strategy": "No Rotation",
+    "rotation_time_us": 0.09,
+    "codebook_lookup_time_us": 65.539,
+    "total_quantize_time_us": 147.943,
+    "mse_distortion": 0.000132,
+    "inner_product_error": 0.000133
+  }
+]

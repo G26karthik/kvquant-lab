@@ -1,0 +1,118 @@
+{
+  "mathematical_fidelity": {
+    "outlier_2.5": {
+      "mse_distortion": 0.0014805248938500881,
+      "inner_product_error": 0.04130114987492561
+    },
+    "outlier_3.5": {
+      "mse_distortion": 0.0004296385159250349,
+      "inner_product_error": 0.023055069148540497
+    },
+    "flat_3": {
+      "mse_distortion": 0.0005227578221820295,
+      "inner_product_error": 0.025527657940983772
+    },
+    "flat_4": {
+      "mse_distortion": 0.0001432698918506503,
+      "inner_product_error": 0.013426528312265873
+    }
+  },
+  "average_perplexity": {
+    "outlier_2.5": 4.675709316211911,
+    "outlier_3.5": 5.560472723307226,
+    "flat_3": 4.691360146164434,
+    "flat_4": 4.562866760524225
+  },
+  "average_cache_size_kb": {
+    "outlier_2.5": 957.0,
+    "outlier_3.5": 1305.0,
+    "flat_3": 1218.0,
+    "flat_4": 1566.0
+  },
+  "per_prompt": [
+    {
+      "prompt": "The future of artificial intelligence in healthcare will",
+      "results": {
+        "outlier_2.5": {
+          "perplexity": 2.6739784422673107,
+          "kv_cache_kb": 940.5
+        },
+        "outlier_3.5": {
+          "perplexity": 6.660944787121284,
+          "kv_cache_kb": 1282.5
+        },
+        "flat_3": {
+          "perplexity": 5.372569270282557,
+          "kv_cache_kb": 1197.0
+        },
+        "flat_4": {
+          "perplexity": 3.0983050462045068,
+          "kv_cache_kb": 1539.0
+        }
+      }
+    },
+    {
+      "prompt": "Quantum computing represents a fundamental shift in",
+      "results": {
+        "outlier_2.5": {
+          "perplexity": 4.0162741051364135,
+          "kv_cache_kb": 940.5
+        },
+        "outlier_3.5": {
+          "perplexity": 4.030780376744355,
+          "kv_cache_kb": 1282.5
+        },
+        "flat_3": {
+          "perplexity": 3.9072604651944474,
+          "kv_cache_kb": 1197.0
+        },
+        "flat_4": {
+          "perplexity": 4.343908148275805,
+          "kv_cache_kb": 1539.0
+        }
+      }
+    },
+    {
+      "prompt": "The most significant challenge facing climate science today is",
+      "results": {
+        "outlier_2.5": {
+          "perplexity": 4.326420968113184,
+          "kv_cache_kb": 957.0
+        },
+        "outlier_3.5": {
+          "perplexity": 4.407216655007412,
+          "kv_cache_kb": 1305.0
+        },
+        "flat_3": {
+          "perplexity": 3.509766218512356,
+          "kv_cache_kb": 1218.0
+        },
+        "flat_4": {
+          "perplexity": 4.631282439976148,
+          "kv_cache_kb": 1566.0
+        }
+      }
+    },
+    {
+      "prompt": "In the field of natural language processing, transformer models have",
+      "results": {
+        "outlier_2.5": {
+          "perplexity": 7.686163749330736,
+          "kv_cache_kb": 990.0
+        },
+        "outlier_3.5": {
+          "perplexity": 7.142949074355853,
+          "kv_cache_kb": 1350.0
+        },
+        "flat_3": {
+          "perplexity": 5.975844630668374,
+          "kv_cache_kb": 1260.0
+        },
+        "flat_4": {
+          "perplexity": 6.177971407640437,
+          "kv_cache_kb": 1620.0
+        }
+      }
+    }
+  ]
+}

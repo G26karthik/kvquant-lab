@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+dist/
+build/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+training/checkpoints/*.pt
+*.pdf
+*.pt

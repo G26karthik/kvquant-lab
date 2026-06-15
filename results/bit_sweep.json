@@ -1,0 +1,105 @@
+{
+  "baseline": {
+    "perplexity": 4.258,
+    "tokens_per_sec": 56.9088,
+    "kv_cache_kb": 5664.0
+  },
+  "sweep": [
+    {
+      "scheme": "Scheme A (QR + Sym QJL)",
+      "bits": 2,
+      "perplexity": 9.9201,
+      "tokens_per_sec": 18.3147,
+      "kv_cache_kb": 1044.0,
+      "compression_ratio": 5.43
+    },
+    {
+      "scheme": "Scheme A (QR + Sym QJL)",
+      "bits": 3,
+      "perplexity": 6.4595,
+      "tokens_per_sec": 18.1512,
+      "kv_cache_kb": 1392.0,
+      "compression_ratio": 4.07
+    },
+    {
+      "scheme": "Scheme A (QR + Sym QJL)",
+      "bits": 4,
+      "perplexity": 3.9683,
+      "tokens_per_sec": 17.8525,
+      "kv_cache_kb": 1740.0,
+      "compression_ratio": 3.26
+    },
+    {
+      "scheme": "Scheme A (QR + Sym QJL)",
+      "bits": 5,
+      "perplexity": 4.3138,
+      "tokens_per_sec": 17.4668,
+      "kv_cache_kb": 2088.0,
+      "compression_ratio": 2.71
+    },
+    {
+      "scheme": "Scheme B (WHT + Asym QJL)",
+      "bits": 2,
+      "perplexity": 7.1156,
+      "tokens_per_sec": 10.6564,
+      "kv_cache_kb": 957.0,
+      "compression_ratio": 5.92
+    },
+    {
+      "scheme": "Scheme B (WHT + Asym QJL)",
+      "bits": 3,
+      "perplexity": 4.2285,
+      "tokens_per_sec": 10.7076,
+      "kv_cache_kb": 1305.0,
+      "compression_ratio": 4.34
+    },
+    {
+      "scheme": "Scheme B (WHT + Asym QJL)",
+      "bits": 4,
+      "perplexity": 4.8087,
+      "tokens_per_sec": 10.7015,
+      "kv_cache_kb": 1653.0,
+      "compression_ratio": 3.43
+    },
+    {
+      "scheme": "Scheme B (WHT + Asym QJL)",
+      "bits": 5,
+      "perplexity": 4.4021,
+      "tokens_per_sec": 10.7278,
+      "kv_cache_kb": 2001.0,
+      "compression_ratio": 2.83
+    },
+    {
+      "scheme": "Scheme C (WHT + MSE Only)",
+      "bits": 2,
+      "perplexity": 4.6199,
+      "tokens_per_sec": 14.6787,
+      "kv_cache_kb": 870.0,
+      "compression_ratio": 6.51
+    },
+    {
+      "scheme": "Scheme C (WHT + MSE Only)",
+      "bits": 3,
+      "perplexity": 4.8994,
+      "tokens_per_sec": 14.4258,
+      "kv_cache_kb": 1218.0,
+      "compression_ratio": 4.65
+    },
+    {
+      "scheme": "Scheme C (WHT + MSE Only)",
+      "bits": 4,
+      "perplexity": 4.4637,
+      "tokens_per_sec": 13.9441,
+      "kv_cache_kb": 1566.0,
+      "compression_ratio": 3.62
+    },
+    {
+      "scheme": "Scheme C (WHT + MSE Only)",
+      "bits": 5,
+      "perplexity": 4.2504,
+      "tokens_per_sec": 14.0196,
+      "kv_cache_kb": 1914.0,
+      "compression_ratio": 2.96
+    }
+  ]
+}

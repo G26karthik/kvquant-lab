@@ -1,0 +1,38 @@
+[
+  {
+    "segment_size": 8,
+    "cost_fraction": 0.125,
+    "recall_accuracy": 100.0,
+    "cache_footprint_kb": 15036.0
+  },
+  {
+    "segment_size": 16,
+    "cost_fraction": 0.0625,
+    "recall_accuracy": 100.0,
+    "cache_footprint_kb": 15576.0
+  },
+  {
+    "segment_size": 32,
+    "cost_fraction": 0.03125,
+    "recall_accuracy": 100.0,
+    "cache_footprint_kb": 16656.0
+  },
+  {
+    "segment_size": 64,
+    "cost_fraction": 0.015625,
+    "recall_accuracy": 100.0,
+    "cache_footprint_kb": 18816.0
+  },
+  {
+    "segment_size": 128,
+    "cost_fraction": 0.0078125,
+    "recall_accuracy": 90.0,
+    "cache_footprint_kb": 23136.0
+  },
+  {
+    "segment_size": 256,
+    "cost_fraction": 0.00390625,
+    "recall_accuracy": 100.0,
+    "cache_footprint_kb": 31776.0
+  }
+]

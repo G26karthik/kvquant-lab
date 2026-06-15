@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bit-Budget Sweep Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f1117;
+    color: #e6e6e6;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: #8b8fa3;
+    font-weight: 400;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  @media(min-width: 900px) {
+    .cards {
+        grid-template-columns: 2fr 1fr;
+    }
+  }
+  .card {
+    background: #1a1d28;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #12141d;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .legend {
+    margin-top: 15px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #2a2d3a;
+    text-align: left;
+  }
+  th {
+    background: #12141d;
+    color: #8b8fa3;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+  .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .highlight {
+    color: #50fa7b;
+    font-weight: 600;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Bit-Budget Sweep &mdash; Quality vs Compression Curves</h1>
+    <div class="subtitle">Comparing QR + Symmetric QJL vs WHT + Asymmetric QJL vs WHT + MSE-Only Ablation</div>
+  </header>
+
+  <div class="cards">
+    <!-- Chart Card -->
+    <div class="card">
+      <h2>Perplexity vs. Compression Ratio (d=64)</h2>
+      <div class="chart-container">
+        <svg width="700" height="400" viewBox="0 0 700 400">
+          <!-- Axes and Grid -->
+          
+        <line x1="179.62500000000003" y1="60" x2="179.62500000000003" y2="340" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="179.62500000000003" y="360" fill="#8b8fa3" font-size="10" text-anchor="middle">3.2x</text>
+        
+        <line x1="324.62500000000006" y1="60" x2="324.62500000000006" y2="340" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="324.62500000000006" y="360" fill="#8b8fa3" font-size="10" text-anchor="middle">4.4x</text>
+        
+        <line x1="469.62499999999994" y1="60" x2="469.62499999999994" y2="340" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="469.62499999999994" y="360" fill="#8b8fa3" font-size="10" text-anchor="middle">5.6x</text>
+        
+        <line x1="614.625" y1="60" x2="614.625" y2="340" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="614.625" y="360" fill="#8b8fa3" font-size="10" text-anchor="middle">6.8x</text>
+        
+        <line x1="60" y1="294.41813631002043" x2="640" y2="294.41813631002043" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="50" y="298.41813631002043" fill="#8b8fa3" font-size="10" text-anchor="end">4.6</text>
+        
+        <line x1="60" y1="229.97439512068814" x2="640" y2="229.97439512068814" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="50" y="233.97439512068814" fill="#8b8fa3" font-size="10" text-anchor="end">6.2</text>
+        
+        <line x1="60" y1="165.53065393135586" x2="640" y2="165.53065393135586" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="50" y="169.53065393135586" fill="#8b8fa3" font-size="10" text-anchor="end">7.8</text>
+        
+        <line x1="60" y1="101.08691274202363" x2="640" y2="101.08691274202363" stroke="#2a2d3a" stroke-dasharray="2,2" />
+        <text x="50" y="105.08691274202363" fill="#8b8fa3" font-size="10" text-anchor="end">9.4</text>
+        
+          
+          <!-- Axis labels -->
+          <text x="350.0" y="390" fill="#e6e6e6" font-size="12" text-anchor="middle">Compression Ratio vs. FP16 Baseline (x)</text>
+          <text x="15" y="200.0" fill="#e6e6e6" font-size="12" text-anchor="middle" transform="rotate(-90 15 200.0)">Perplexity (PPL)</text>
+          
+          <!-- Chart Lines -->
+          <path d="M 120.4 305.9 L 186.9 319.9 L 284.8 219.5 L 449.1 80.1" fill="none" stroke="#ff5555" stroke-width="2" />
+<path d="M 134.9 302.4 L 207.4 286.0 L 317.4 309.4 L 508.3 193.1" fill="none" stroke="#50fa7b" stroke-width="2" />
+<path d="M 150.6 308.5 L 230.4 299.9 L 354.8 282.4 L 579.6 293.6" fill="none" stroke="#8be9fd" stroke-width="2" />
+
+          <!-- Chart Points -->
+          
+            <circle cx="120.4" cy="305.9" r="4" fill="#ff5555" />
+            <text x="120.4" y="297.9" fill="#a0a4b8" font-size="9" text-anchor="middle">4.31 PPL</text>
+            
+            <circle cx="186.9" cy="319.9" r="4" fill="#ff5555" />
+            <text x="186.9" y="311.9" fill="#a0a4b8" font-size="9" text-anchor="middle">3.97 PPL</text>
+            
+            <circle cx="284.8" cy="219.5" r="4" fill="#ff5555" />
+            <text x="284.8" y="211.5" fill="#a0a4b8" font-size="9" text-anchor="middle">6.46 PPL</text>
+            
+            <circle cx="449.1" cy="80.1" r="4" fill="#ff5555" />
+            <text x="449.1" y="72.1" fill="#a0a4b8" font-size="9" text-anchor="middle">9.92 PPL</text>
+            
+            <circle cx="134.9" cy="302.4" r="4" fill="#50fa7b" />
+            <text x="134.9" y="294.4" fill="#a0a4b8" font-size="9" text-anchor="middle">4.40 PPL</text>
+            
+            <circle cx="207.4" cy="286.0" r="4" fill="#50fa7b" />
+            <text x="207.4" y="278.0" fill="#a0a4b8" font-size="9" text-anchor="middle">4.81 PPL</text>
+            
+            <circle cx="317.4" cy="309.4" r="4" fill="#50fa7b" />
+            <text x="317.4" y="301.4" fill="#a0a4b8" font-size="9" text-anchor="middle">4.23 PPL</text>
+            
+            <circle cx="508.3" cy="193.1" r="4" fill="#50fa7b" />
+            <text x="508.3" y="185.1" fill="#a0a4b8" font-size="9" text-anchor="middle">7.12 PPL</text>
+            
+            <circle cx="150.6" cy="308.5" r="4" fill="#8be9fd" />
+            <text x="150.6" y="300.5" fill="#a0a4b8" font-size="9" text-anchor="middle">4.25 PPL</text>
+            
+            <circle cx="230.4" cy="299.9" r="4" fill="#8be9fd" />
+            <text x="230.4" y="291.9" fill="#a0a4b8" font-size="9" text-anchor="middle">4.46 PPL</text>
+            
+            <circle cx="354.8" cy="282.4" r="4" fill="#8be9fd" />
+            <text x="354.8" y="274.4" fill="#a0a4b8" font-size="9" text-anchor="middle">4.90 PPL</text>
+            
+            <circle cx="579.6" cy="293.6" r="4" fill="#8be9fd" />
+            <text x="579.6" y="285.6" fill="#a0a4b8" font-size="9" text-anchor="middle">4.62 PPL</text>
+            
+        </svg>
+      </div>
+      
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background:#ff5555;"></div>
+          <span>Scheme A (QR + Sym QJL)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background:#50fa7b;"></div>
+          <span>Scheme B (WHT + Asym QJL)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background:#8be9fd;"></div>
+          <span>Scheme C (WHT + MSE Only)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info/Details Card -->
+    <div class="card">
+      <h2>Sweep Key Takeaways</h2>
+      <p style="font-size:13.5px;line-height:1.7;color:#a0a4b8;margin-bottom:15px;">
+        This sweep helps locate the <strong>crossover point</strong> for the QJL residual at $d=64$. 
+        While QJL yields unbiased dot products, the added 1-bit sketch and secondary norms introduce additional variance 
+        and storage overhead at higher bit budgets.
+      </p>
+      <p style="font-size:13.5px;line-height:1.7;color:#a0a4b8;">
+        At lower bits (e.g., 2-bit), the unbiased nature of QJL helps prevent severe perplexity spikes, 
+        whereas at higher bits (5-bit), MSE-only quantization achieves superior rate-distortion performance 
+        since the coordinate-wise quantization error is already small.
+      </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Detailed Sweep Data</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Scheme</th>
+          <th>Bits</th>
+          <th class="num">KV Cache Size</th>
+          <th class="num">Compression Ratio</th>
+          <th class="num">Perplexity</th>
+          <th class="num">Tokens/sec</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Baseline row -->
+        <tr style="background:#12141d;">
+          <td><strong>Baseline (FP16)</strong></td>
+          <td>16</td>
+          <td class="num">5664.0 KB</td>
+          <td class="num highlight">1.0x</td>
+          <td class="num">4.26</td>
+          <td class="num">56.91</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ff5555">Scheme A (QR + Sym QJL)</td>
+            <td>2</td>
+            <td class="num">1044.0 KB</td>
+            <td class="num highlight">5.4x</td>
+            <td class="num">9.92</td>
+            <td class="num">18.31</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ff5555">Scheme A (QR + Sym QJL)</td>
+            <td>3</td>
+            <td class="num">1392.0 KB</td>
+            <td class="num highlight">4.1x</td>
+            <td class="num">6.46</td>
+            <td class="num">18.15</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ff5555">Scheme A (QR + Sym QJL)</td>
+            <td>4</td>
+            <td class="num">1740.0 KB</td>
+            <td class="num highlight">3.3x</td>
+            <td class="num">3.97</td>
+            <td class="num">17.85</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#ff5555">Scheme A (QR + Sym QJL)</td>
+            <td>5</td>
+            <td class="num">2088.0 KB</td>
+            <td class="num highlight">2.7x</td>
+            <td class="num">4.31</td>
+            <td class="num">17.47</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#50fa7b">Scheme B (WHT + Asym QJL)</td>
+            <td>2</td>
+            <td class="num">957.0 KB</td>
+            <td class="num highlight">5.9x</td>
+            <td class="num">7.12</td>
+            <td class="num">10.66</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#50fa7b">Scheme B (WHT + Asym QJL)</td>
+            <td>3</td>
+            <td class="num">1305.0 KB</td>
+            <td class="num highlight">4.3x</td>
+            <td class="num">4.23</td>
+            <td class="num">10.71</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#50fa7b">Scheme B (WHT + Asym QJL)</td>
+            <td>4</td>
+            <td class="num">1653.0 KB</td>
+            <td class="num highlight">3.4x</td>
+            <td class="num">4.81</td>
+            <td class="num">10.70</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#50fa7b">Scheme B (WHT + Asym QJL)</td>
+            <td>5</td>
+            <td class="num">2001.0 KB</td>
+            <td class="num highlight">2.8x</td>
+            <td class="num">4.40</td>
+            <td class="num">10.73</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#8be9fd">Scheme C (WHT + MSE Only)</td>
+            <td>2</td>
+            <td class="num">870.0 KB</td>
+            <td class="num highlight">6.5x</td>
+            <td class="num">4.62</td>
+            <td class="num">14.68</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#8be9fd">Scheme C (WHT + MSE Only)</td>
+            <td>3</td>
+            <td class="num">1218.0 KB</td>
+            <td class="num highlight">4.7x</td>
+            <td class="num">4.90</td>
+            <td class="num">14.43</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#8be9fd">Scheme C (WHT + MSE Only)</td>
+            <td>4</td>
+            <td class="num">1566.0 KB</td>
+            <td class="num highlight">3.6x</td>
+            <td class="num">4.46</td>
+            <td class="num">13.94</td>
+        </tr>
+        
+        <tr>
+            <td style="color:#8be9fd">Scheme C (WHT + MSE Only)</td>
+            <td>5</td>
+            <td class="num">1914.0 KB</td>
+            <td class="num highlight">3.0x</td>
+            <td class="num">4.25</td>
+            <td class="num">14.02</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Generated by bit_sweep.py &middot; Device: CUDA
+  </div>
+</div>
+</body>
+</html>

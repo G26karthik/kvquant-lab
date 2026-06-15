@@ -1,0 +1,106 @@
+{
+  "eval_a_perplexity": {
+    "Baseline FP16": 19.031841359412685,
+    "Original TurboQuant (3-bit)": 89.33866518782399,
+    "Original TurboQuant (4-bit)": 24.71317648931475,
+    "WHT + Asymmetric QJL (3-bit)": 76.92665996647646,
+    "WHT + Asymmetric QJL (4-bit)": 23.951941253546007
+  },
+  "eval_b_hellaswag": {
+    "Baseline FP16": 40.0,
+    "Original TurboQuant (3-bit)": 37.0,
+    "Original TurboQuant (4-bit)": 38.0,
+    "WHT + Asymmetric QJL (3-bit)": 42.0,
+    "WHT + Asymmetric QJL (4-bit)": 40.0
+  },
+  "eval_c_niah": {
+    "baseline_fp16": {
+      "256": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "512": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "768": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "1024": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      }
+    },
+    "turboquant_flat": {
+      "256": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "512": {
+        "Early": 90.0,
+        "Middle": 100.0,
+        "Late": 80.0
+      },
+      "768": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "1024": {
+        "Early": 100.0,
+        "Middle": 90.0,
+        "Late": 100.0
+      }
+    },
+    "wht_asym_flat": {
+      "256": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "512": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "768": {
+        "Early": 100.0,
+        "Middle": 90.0,
+        "Late": 100.0
+      },
+      "1024": {
+        "Early": 100.0,
+        "Middle": 90.0,
+        "Late": 100.0
+      }
+    },
+    "mc_turboquant": {
+      "256": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 100.0
+      },
+      "512": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 90.0
+      },
+      "768": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 90.0
+      },
+      "1024": {
+        "Early": 100.0,
+        "Middle": 100.0,
+        "Late": 90.0
+      }
+    }
+  }
+}

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Information-Theoretic Distortion Bounds Verification</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f1117;
+    color: #e6e6e6;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: #8b8fa3;
+    font-weight: 400;
+  }
+  .card {
+    background: #1a1d28;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #2a2d3a;
+  }
+  th {
+    background: #12141d;
+    color: #8b8fa3;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  tr:hover {
+    background: #242936;
+  }
+  .num-val {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  th.num-val {
+    text-align: right;
+  }
+  .highlight {
+    color: #50fa7b;
+    font-weight: 600;
+  }
+  .dim-val {
+    font-weight: 600;
+    color: #4a9eff;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Information-Theoretic Shannon Distortion Bounds Verification</h1>
+    <div class="subtitle">Verifying TurboQuant Distortion within factor ≈2.7 of Shannon Lower Bound &middot; d=64</div>
+  </header>
+
+  <div class="card">
+    <h2>Mean Squared Error (MSE) Distortion Comparison</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Bits (b)</th>
+          <th class="num-val">Shannon MSE LB</th>
+          <th class="num-val">TQ MSE (Flat QR)</th>
+          <th class="num-val">WHT MSE</th>
+          <th class="num-val">Outlier Split MSE</th>
+          <th class="num-val">Ratio TQ / LB</th>
+          <th class="num-val">Ratio WHT / LB</th>
+          <th class="num-val">Ratio Outlier / LB</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+            <td class="dim-val">2</td>
+            <td class="num-val">0.06250000</td>
+            <td class="num-val highlight">0.11466135</td>
+            <td class="num-val">0.11456577</td>
+            <td class="num-val">0.27413687</td>
+            <td class="num-val highlight">1.835x</td>
+            <td class="num-val">1.833x</td>
+            <td class="num-val">4.386x</td>
+        </tr>
+        
+        <tr>
+            <td class="dim-val">3</td>
+            <td class="num-val">0.01562500</td>
+            <td class="num-val highlight">0.03340631</td>
+            <td class="num-val">0.03338734</td>
+            <td class="num-val">0.08693707</td>
+            <td class="num-val highlight">2.138x</td>
+            <td class="num-val">2.137x</td>
+            <td class="num-val">5.564x</td>
+        </tr>
+        
+        <tr>
+            <td class="dim-val">4</td>
+            <td class="num-val">0.00390625</td>
+            <td class="num-val highlight">0.00914108</td>
+            <td class="num-val">0.00912396</td>
+            <td class="num-val">0.02524106</td>
+            <td class="num-val highlight">2.340x</td>
+            <td class="num-val">2.336x</td>
+            <td class="num-val">6.462x</td>
+        </tr>
+        
+        <tr>
+            <td class="dim-val">5</td>
+            <td class="num-val">0.00097656</td>
+            <td class="num-val highlight">0.00240954</td>
+            <td class="num-val">0.00239975</td>
+            <td class="num-val">0.00691004</td>
+            <td class="num-val highlight">2.467x</td>
+            <td class="num-val">2.457x</td>
+            <td class="num-val">7.076x</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Inner Product (IP) Distortion Comparison</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Bits (b)</th>
+          <th class="num-val">Shannon IP LB</th>
+          <th class="num-val">TQ IP (Flat QR)</th>
+          <th class="num-val">WHT IP</th>
+          <th class="num-val">Ratio TQ / LB</th>
+          <th class="num-val">Ratio WHT / LB</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+            <td class="dim-val">2</td>
+            <td class="num-val">0.00097656</td>
+            <td class="num-val highlight">0.00891814</td>
+            <td class="num-val">0.00179025</td>
+            <td class="num-val highlight">9.132x</td>
+            <td class="num-val">1.833x</td>
+        </tr>
+        
+        <tr>
+            <td class="dim-val">3</td>
+            <td class="num-val">0.00024414</td>
+            <td class="num-val highlight">0.00285825</td>
+            <td class="num-val">0.00051550</td>
+            <td class="num-val highlight">11.707x</td>
+            <td class="num-val">2.111x</td>
+        </tr>
+        
+        <tr>
+            <td class="dim-val">4</td>
+            <td class="num-val">0.00006104</td>
+            <td class="num-val highlight">0.00086471</td>
+            <td class="num-val">0.00014222</td>
+            <td class="num-val highlight">14.167x</td>
+            <td class="num-val">2.330x</td>
+        </tr>
+        
+        <tr>
+            <td class="dim-val">5</td>
+            <td class="num-val">0.00001526</td>
+            <td class="num-val highlight">0.00023240</td>
+            <td class="num-val">0.00003795</td>
+            <td class="num-val highlight">15.230x</td>
+            <td class="num-val">2.487x</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Generated by distortion_bounds.py &middot; d=64 &middot; Seed: 42 &middot; Device: CUDA
+  </div>
+</div>
+</body>
+</html>

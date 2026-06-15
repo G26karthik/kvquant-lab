@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kvquant-lab — Master Final Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --bg:#0b0d14; --card:#13151f; --border:#1f2235; --accent:#6366f1;
+    --green:#34d399; --yellow:#fbbf24; --red:#f87171; --muted:#64748b;
+    --text:#e2e8f0; --text2:#94a3b8;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;
+        line-height:1.6;padding:40px 24px;min-height:100vh;}
+  .container{max-width:1300px;margin:0 auto;}
+
+  /* ── Hero ── */
+  .hero{text-align:center;padding:60px 20px 48px;}
+  .hero-badge{display:inline-block;background:rgba(99,102,241,.15);
+    border:1px solid rgba(99,102,241,.4);color:#818cf8;font-size:11px;
+    font-weight:600;letter-spacing:1.2px;text-transform:uppercase;
+    padding:4px 14px;border-radius:20px;margin-bottom:20px;}
+  .hero h1{font-size:clamp(28px,4vw,48px);font-weight:700;line-height:1.15;
+    background:linear-gradient(135deg,#e2e8f0 0%,#818cf8 60%,#34d399 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;margin-bottom:12px;}
+  .hero .sub{color:var(--text2);font-size:15px;max-width:680px;margin:0 auto;}
+
+  /* ── Section headings ── */
+  .section{margin-bottom:48px;}
+  .section-title{font-size:13px;font-weight:600;letter-spacing:.8px;
+    text-transform:uppercase;color:var(--muted);margin-bottom:16px;
+    display:flex;align-items:center;gap:10px;}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+  /* ── Card ── */
+  .card{background:var(--card);border:1px solid var(--border);
+         border-radius:14px;padding:24px;margin-bottom:24px;}
+
+  /* ── Stat cards ── */
+  .stat-grid,.demo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;margin-bottom:8px;}
+  .stat-card{background:#0f1120;border:1px solid var(--border);border-radius:12px;
+    padding:18px 20px;}
+  .stat-card.accent{border-color:rgba(99,102,241,.5);
+    background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(52,211,153,.05));}
+  .stat-label{font-size:11px;font-weight:600;letter-spacing:.6px;
+    text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .stat-val{font-size:26px;font-weight:700;color:var(--text);line-height:1.2;}
+  .stat-val .sub{font-size:13px;font-weight:400;color:var(--text2);}
+  .stat-sub{font-size:12px;color:var(--muted);margin-top:4px;
+    font-family:'JetBrains Mono',monospace;}
+
+  /* ── Table ── */
+  .table-wrapper{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  th{background:#0b0d14;color:var(--muted);font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+  tr:hover td{background:rgba(99,102,241,.04);}
+  td.num{text-align:right;font-family:'JetBrains Mono',monospace;font-size:12.5px;}
+  td.scheme-name{font-weight:600;color:#c7d2fe;max-width:280px;}
+  .hi{color:var(--green);font-weight:600;}
+  .lo{color:var(--yellow);}
+  .na{color:#3f475e;}
+
+  /* ── Footer ── */
+  .footer{text-align:center;font-size:12px;color:#3f475e;margin-top:60px;
+    padding-top:24px;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-badge">kvquant-lab · Final Report</div>
+    <h1>Master Head-to-Head Comparison</h1>
+    <p class="sub">
+      TurboQuant (arXiv:2504.19874) × Memory Caching (arXiv:2602.24281) —
+      8 quantization schemes, 10 metrics, GPT-2 Medium on RTX 4060 Laptop GPU.
+    </p>
+  </div>
+
+  <!-- ── TurboQuant Demo Highlights ── -->
+  <div class="section">
+    <div class="section-title">TurboQuant Core Demo</div>
+    
+    <div class="demo-grid">
+      <div class="stat-card accent">
+        <div class="stat-label">Compression Ratio</div>
+        <div class="stat-val">3.26×</div>
+        <div class="stat-sub">FP16 KV → 4-bit TurboQuant</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Perplexity Δ</div>
+        <div class="stat-val">+6.07%</div>
+        <div class="stat-sub">4.2572 → 4.5154</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Baseline Speed</div>
+        <div class="stat-val">40.31 tok/s</div>
+        <div class="stat-sub">KV Cache: 5664.0 KB</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">TurboQuant Speed</div>
+        <div class="stat-val">11.96 tok/s</div>
+        <div class="stat-sub">KV Cache: 1740.0 KB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Master Table ── -->
+  <div class="section">
+    <div class="section-title">Full Head-to-Head Metrics</div>
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Quantization Configuration</th>
+              <th style="text-align:right">Avg Bits</th>
+              <th style="text-align:right">Compression</th>
+              <th style="text-align:right">WikiText-2 PPL ↓</th>
+              <th style="text-align:right">HellaSwag ↑</th>
+              <th style="text-align:right">NIAH @512 ↑</th>
+              <th style="text-align:right">NN Recall@1 ↑</th>
+              <th style="text-align:right">PassageQA ↑</th>
+              <th style="text-align:right">Summ R-1 ↑</th>
+              <th style="text-align:right">Code Compl ↑</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+        <tr>
+          <td class="scheme-name">Baseline FP16</td>
+          <td class="num">16.00 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num ">1.00x</td>
+          <td class="num lo">19.03</td>
+          <td class="num">40.0%</td>
+          <td class="num">100.0%</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num">25.0%</td>
+          <td class="num">11.987</td>
+          <td class="num">0.0%</td>
+        </tr>
+        <tr>
+          <td class="scheme-name">Original TurboQuant (3-bit)</td>
+          <td class="num">4.00 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num hi">4.00x</td>
+          <td class="num ">89.34</td>
+          <td class="num">37.0%</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+        </tr>
+        <tr>
+          <td class="scheme-name">Original TurboQuant (4-bit)</td>
+          <td class="num">5.00 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num hi">3.20x</td>
+          <td class="num lo">24.71</td>
+          <td class="num">38.0%</td>
+          <td class="num">100.0%</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+        </tr>
+        <tr>
+          <td class="scheme-name">WHT + Asymmetric QJL (3-bit)</td>
+          <td class="num">4.00 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num hi">4.00x</td>
+          <td class="num ">76.93</td>
+          <td class="num">42.0%</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+        </tr>
+        <tr>
+          <td class="scheme-name">WHT + Asymmetric QJL (4-bit)</td>
+          <td class="num">5.00 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num hi">3.20x</td>
+          <td class="num lo">23.95</td>
+          <td class="num">40.0%</td>
+          <td class="num">100.0%</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num">0.0%</td>
+          <td class="num">0.000</td>
+          <td class="num">5.0%</td>
+        </tr>
+        <tr>
+          <td class="scheme-name">MC-TurboQuant (4-bit)</td>
+          <td class="num">5.00 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num hi">3.20x</td>
+          <td class="num lo">23.95</td>
+          <td class="num">40.0%</td>
+          <td class="num">100.0%</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+        </tr>
+        <tr>
+          <td class="scheme-name">Outlier Channel Splitting (2.5-bit)</td>
+          <td class="num">3.44 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num hi">4.65x</td>
+          <td class="num lo">4.68</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num">5.0%</td>
+          <td class="num">0.000</td>
+          <td class="num">5.0%</td>
+        </tr>
+        <tr>
+          <td class="scheme-name">Outlier Channel Splitting (3.5-bit)</td>
+          <td class="num">4.44 <span style='font-size:11px;color:#8b8fa3'>b</span></td>
+          <td class="num hi">3.60x</td>
+          <td class="num lo">5.56</td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num"><span class="na">—</span></td>
+          <td class="num">0.0%</td>
+          <td class="num">0.000</td>
+          <td class="num">5.0%</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Distortion Bounds ── -->
+  <div class="section">
+    <div class="section-title">Information-Theoretic Distortion Analysis (MSE vs Shannon Lower Bound)</div>
+    <div class="stat-grid">
+      
+        <div class="stat-card">
+          <div class="stat-label">2-bit MSE Gap</div>
+          <div class="stat-val">1.83× <span class="sub">above Shannon</span></div>
+          <div class="stat-sub">TQ: 0.11466  WHT: 0.11457  LB: 0.06250</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">3-bit MSE Gap</div>
+          <div class="stat-val">2.14× <span class="sub">above Shannon</span></div>
+          <div class="stat-sub">TQ: 0.03341  WHT: 0.03339  LB: 0.01562</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">4-bit MSE Gap</div>
+          <div class="stat-val">2.34× <span class="sub">above Shannon</span></div>
+          <div class="stat-sub">TQ: 0.00914  WHT: 0.00912  LB: 0.00391</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">5-bit MSE Gap</div>
+          <div class="stat-val">2.47× <span class="sub">above Shannon</span></div>
+          <div class="stat-sub">TQ: 0.00241  WHT: 0.00240  LB: 0.00098</div>
+        </div>
+    </div>
+  </div>
+
+  <!-- ── Outlier Channel Splitting ── -->
+  <div class="section">
+    <div class="section-title">Outlier Channel Splitting vs Flat Lloyd-Max</div>
+    <div class="stat-grid">
+      
+        <div class="stat-card">
+          <div class="stat-label">2.5-bit Outlier</div>
+          <div class="stat-val">4.6757 PPL</div>
+          <div class="stat-sub">957 KB cache &nbsp;·&nbsp; MSE 0.001481</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">3.5-bit Outlier</div>
+          <div class="stat-val">5.5605 PPL</div>
+          <div class="stat-sub">1305 KB cache &nbsp;·&nbsp; MSE 0.000430</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Flat 3-bit</div>
+          <div class="stat-val">4.6914 PPL</div>
+          <div class="stat-sub">1218 KB cache &nbsp;·&nbsp; MSE 0.000523</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Flat 4-bit</div>
+          <div class="stat-val">4.5629 PPL</div>
+          <div class="stat-sub">1566 KB cache &nbsp;·&nbsp; MSE 0.000143</div>
+        </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Generated by final_comparison.py &middot; 2026-06-14 20:22 UTC &middot; GPT-2 Medium (d_head=64) &middot; RTX 4060 Laptop GPU
+  </div>
+
+</div>
+</body>
+</html>

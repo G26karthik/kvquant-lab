@@ -1,0 +1,38 @@
+{
+  "mathematical_fidelity": {
+    "turboquant_mse": {
+      "mse_distortion": 0.0017900363309308887,
+      "inner_product_error": 0.04627710580825806
+    },
+    "fibquant_2d": {
+      "mse_distortion": 0.0033782401587814093,
+      "inner_product_error": 0.06335017085075378
+    }
+  },
+  "average_perplexity": {
+    "turboquant_mse": 4.619863241081678,
+    "fibquant_2d": 5.048068264092591
+  },
+  "per_prompt": [
+    {
+      "prompt": "The future of artificial intelligence in healthcare will",
+      "fibquant_ppl": 3.3472083302314233,
+      "tq_mse_ppl": 2.8846780920782105
+    },
+    {
+      "prompt": "Quantum computing represents a fundamental shift in",
+      "fibquant_ppl": 4.718106602630049,
+      "tq_mse_ppl": 3.6444092973072597
+    },
+    {
+      "prompt": "The most significant challenge facing climate science today is",
+      "fibquant_ppl": 6.072739140407485,
+      "tq_mse_ppl": 5.265747200458749
+    },
+    {
+      "prompt": "In the field of natural language processing, transformer models have",
+      "fibquant_ppl": 6.054218983101407,
+      "tq_mse_ppl": 6.684618374482491
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Needle-In-A-Haystack Memory Caching Benchmark</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f1117;
+    color: #e6e6e6;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: #8b8fa3;
+    font-weight: 400;
+  }
+  .commentary {
+    background: #1a1d28;
+    border: 1px solid #50fa7b44;
+    border-left: 4px solid #50fa7b;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+  .commentary h3 {
+    color: #50fa7b;
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .commentary p {
+    font-size: 13.5px;
+    color: #a0a4b8;
+  }
+  .card {
+    background: #1a1d28;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #2a2d3a;
+  }
+  th {
+    background: #12141d;
+    color: #8b8fa3;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  tr:hover {
+    background: #242936;
+  }
+  .num-val {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  th.num-val {
+    text-align: right;
+  }
+  .highlight {
+    color: #50fa7b;
+    font-weight: 600;
+  }
+  .dim-val {
+    font-weight: 600;
+    color: #4a9eff;
+  }
+  .niah-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 20px;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Needle-In-A-Haystack Memory Caching Evaluation</h1>
+    <div class="subtitle">Comparing Standard FP16, Flat TurboQuant, Flat WHT, and our MC-TurboQuant Architecture</div>
+  </header>
+
+  <div class="commentary">
+    <h3>Original Contribution: MC-TurboQuant</h3>
+    <p>
+      We investigate a <strong>novel combination</strong> of two 2026 concepts: 
+      <em>Memory Caching (arXiv:2602.24281)</em> and <em>TurboQuant (arXiv:2504.19874)</em>.
+      While the Memory Caching paper proposes segmenting the sequence to bound memory and retrieve via 
+      Gated Residual Memory (GRM), it does not account for quantization of those cached checkpoints. 
+      <strong>MC-TurboQuant</strong> quantizes the completed segment memories using the WHT + asymmetric QJL quantizer, 
+      retaining the context of segments at ultra-low bit rates.
+    </p>
+  </div>
+
+  <h2>Needle Recall Accuracy Matrices (%)</h2>
+  <div class="niah-grid">
+    
+        <div class="card">
+            <h3>Baseline FP16</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h3>Original TurboQuant Flat (4-bit)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">80%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h3>WHT + Asymmetric QJL Flat (4-bit)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h3>MC-TurboQuant (64-seg, WHT-compressed, 4-bit)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Length (L)</th>
+                        <th class="num-val">Early (10%)</th>
+                        <th class="num-val">Middle (50%)</th>
+                        <th class="num-val">Late (90%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td class="dim-val">256</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">512</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">768</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+            </tr>
+            
+            <tr>
+                <td class="dim-val">1024</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">100%</td>
+                <td class="num-val">90%</td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </div>
+        
+  </div>
+
+  <div class="footer">
+    Generated by mc_niah.py &middot; GPT-2 Medium &middot; Segment Size: 64 &middot; Seed 42
+  </div>
+</div>
+</body>
+</html>
