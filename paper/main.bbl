@@ -1,0 +1,109 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{AmesianX}(2025)]{amesianx2025turboquant}
+{AmesianX}.
+\newblock {AmesianX/TurboQuant}: {TurboQuant} implementation for {llama.cpp}.
+\newblock \url{https://github.com/AmesianX/TurboQuant}, 2025.
+\newblock Community fork. Documents auto-fallback for K~cache to q8\_0 at
+  $d_{\text{head}}=64$ due to CLT convergence failure. Informal,
+  non-peer-reviewed.
+
+\bibitem[Behrouz et~al.(2026)Behrouz, Li, Deng, Zhong, Razaviyayn, and
+  Mirrokni]{behrouz2026mc}
+Ali Behrouz, Zeman Li, Yuan Deng, Peilin Zhong, Meisam Razaviyayn, and Vahab
+  Mirrokni.
+\newblock Memory caching: {RNNs} with growing memory.
+\newblock \emph{arXiv preprint arXiv:2602.24281}, 2026.
+
+\bibitem[Han et~al.(2025)Han, Kacham, Karbasi, Mirrokni, and
+  Zandieh]{han2025polarquant}
+Insu Han, Praneeth Kacham, Amin Karbasi, Vahab Mirrokni, and Amir Zandieh.
+\newblock {PolarQuant}: Quantizing {KV} caches with polar transformation.
+\newblock \emph{arXiv preprint arXiv:2502.02617}, 2025.
+
+\bibitem[Hooper et~al.(2024)Hooper, Kim, Mohammadzadeh, Mahoney, Shao, Keutzer,
+  and Gholami]{hooper2024kvquant}
+Coleman Hooper, Sehoon Kim, Hiva Mohammadzadeh, Michael~W Mahoney, Yakun~Sophia
+  Shao, Kurt Keutzer, and Amir Gholami.
+\newblock {KVQuant}: Towards 10 million context length {LLM} inference with
+  {KV} cache quantization.
+\newblock \emph{arXiv preprint arXiv:2401.18079}, 2024.
+
+\bibitem[Johnson \& Lindenstrauss(1984)Johnson and
+  Lindenstrauss]{johnson1984extensions}
+William~B Johnson and Joram Lindenstrauss.
+\newblock Extensions of {Lipschitz} mappings into a {Hilbert} space.
+\newblock \emph{Contemporary Mathematics}, 26:\penalty0 189--206, 1984.
+
+\bibitem[Lin et~al.(2024)Lin, Tang, Tang, Yang, Chen, Wang, Xiao, Dang, Gan,
+  and Han]{lin2024awq}
+Ji~Lin, Jiaming Tang, Haotian Tang, Shang Yang, Wei-Ming Chen, Wei-Chen Wang,
+  Guangxuan Xiao, Xingyu Dang, Chuang Gan, and Song Han.
+\newblock {AWQ}: Activation-aware weight quantization for on-device {LLM}
+  compression and acceleration.
+\newblock \emph{Proceedings of Machine Learning and Systems}, 6, 2024.
+
+\bibitem[Liu et~al.(2024)Liu, Yuan, Jin, Zhong, Xu, Braverman, Chen, and
+  Hu]{liu2024kivi}
+Zirui Liu, Jiayi Yuan, Hongye Jin, Shaochen Zhong, Zhaozhuo Xu, Vladimir
+  Braverman, Beidi Chen, and Xia Hu.
+\newblock {KIVI}: A tuning-free asymmetric 2bit quantization for {KV} cache.
+\newblock \emph{arXiv preprint arXiv:2402.02750}, 2024.
+
+\bibitem[Lloyd(1982)]{lloyd1982least}
+Stuart Lloyd.
+\newblock Least squares quantization in {PCM}.
+\newblock \emph{IEEE Transactions on Information Theory}, 28\penalty0
+  (2):\penalty0 129--137, 1982.
+
+\bibitem[Merity et~al.(2017)Merity, Xiong, Bradbury, and
+  Socher]{merity2017pointer}
+Stephen Merity, Caiming Xiong, James Bradbury, and Richard Socher.
+\newblock Pointer sentinel mixture models.
+\newblock In \emph{International Conference on Learning Representations}, 2017.
+
+\bibitem[{OnlyTerp}(2025)]{onlyterp2025turboquant}
+{OnlyTerp}.
+\newblock {OnlyTerp/turboquant}: {TurboQuant} community implementation.
+\newblock \url{https://github.com/OnlyTerp/turboquant}, 2025.
+\newblock Community fork. Documents QJL residual variance issues at small head
+  dimensions. Informal, non-peer-reviewed.
+
+\bibitem[Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, and
+  Sutskever]{radford2019gpt2}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, and Ilya
+  Sutskever.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 2019.
+
+\bibitem[Shannon(1959)]{shannon1959coding}
+Claude~E Shannon.
+\newblock \emph{Coding Theorems for a Discrete Source with a Fidelity
+  Criterion}.
+\newblock Institute of Radio Engineers, 1959.
+
+\bibitem[Zandieh et~al.(2024)Zandieh, Daliri, and Han]{zandieh2024qjl}
+Amir Zandieh, Majid Daliri, and Insu Han.
+\newblock {QJL}: 1-bit quantized {JL} transform for {KV} cache quantization
+  with zero overhead.
+\newblock \emph{arXiv preprint arXiv:2406.03482}, 2024.
+
+\bibitem[Zandieh et~al.(2025)Zandieh, Daliri, Hadian, and
+  Mirrokni]{zandieh2025turboquant}
+Amir Zandieh, Majid Daliri, Majid Hadian, and Vahab Mirrokni.
+\newblock {TurboQuant}: Online vector quantization with near-optimal distortion
+  rate.
+\newblock \emph{arXiv preprint arXiv:2504.19874}, 2025.
+
+\bibitem[Zellers et~al.(2019)Zellers, Holtzman, Bisk, Farhadi, and
+  Choi]{zellers2019hellaswag}
+Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi.
+\newblock {HellaSwag}: Can a machine really finish your sentence?
+\newblock \emph{arXiv preprint arXiv:1905.07830}, 2019.
+
+\end{thebibliography}

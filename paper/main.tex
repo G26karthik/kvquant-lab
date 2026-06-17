@@ -1,0 +1,113 @@
+\documentclass{article}
+\usepackage{iclr2026_conference,times}
+
+% ---------- Math ----------
+\usepackage{amsmath,amssymb,amsthm}
+
+% ---------- Tables ----------
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+
+% ---------- Figures ----------
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ---------- Typography ----------
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+
+% ---------- Colors and links ----------
+\usepackage[dvipsnames]{xcolor}
+\usepackage[breaklinks=true]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=NavyBlue,
+    citecolor=OliveGreen,
+    urlcolor=BrickRed
+}
+
+% ---------- Misc ----------
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{float}
+
+% ---------- Tight spacing for ICLR 9-page limit ----------
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+  {-1.2ex plus -0.3ex minus -0.1ex}%
+  {0.6ex plus 0.1ex minus 0.1ex}%
+  {\large\sc\raggedright}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+  {-1.0ex plus -0.2ex minus -0.1ex}%
+  {0.4ex plus 0.1ex minus 0.1ex}%
+  {\normalsize\sc\raggedright}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+  {-0.8ex plus -0.2ex minus -0.1ex}%
+  {0.3ex plus 0.1ex minus 0.1ex}%
+  {\normalsize\sc\raggedright}}
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}%
+  {0.6ex plus 0.2ex minus 0.1ex}%
+  {-1em}%
+  {\normalsize\bf}}
+\makeatother
+
+\setlength{\parskip}{2.0pt plus 1pt minus 0.5pt}
+\renewcommand{\baselinestretch}{0.96}
+
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+
+% ---------- Custom commands ----------
+\newcommand{\dhead}{d_{\text{head}}}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\cf}{\textit{cf.}}
+
+\title{Empirical Analysis of KV Cache Vector Quantization\\
+at Small Head Dimensions:\\
+Failure Modes, Adaptive Corrections, and a\\
+Cross-Architecture Extension to Recurrent Memory Caching}
+
+\author{
+    G.~Karthik Koundinya \\
+    Independent Researcher \\
+    \texttt{Karthikofficialmain@gmail.com}
+}
+
+% \date{June 2026} % Suppressed in ICLR style
+
+\iclrfinalcopy % We show the author names and remove line numbers for preprint
+
+\begin{document}
+
+\maketitle
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/related_work}
+\input{sections/method}
+\input{sections/theoretical_validation}
+\input{sections/experimental_setup}
+\input{sections/results}
+\input{sections/limitations}
+\input{sections/conclusion}
+
+% ---------- References ----------
+\bibliographystyle{iclr2026_conference}
+\bibliography{references}
+
+% ---------- Appendices ----------
+\newpage
+\appendix
+\input{appendices/appendix_console}
+\input{appendices/appendix_tables}
+\input{appendices/appendix_mqar}
+\input{appendices/appendix_source_mapping}
+
+\end{document}

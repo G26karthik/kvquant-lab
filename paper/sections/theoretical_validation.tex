@@ -1,0 +1,77 @@
+% =========================================================================
+% theoretical_validation.tex
+% =========================================================================
+
+\section{Theoretical Validation}
+\label{sec:validation}
+
+I verify the mathematical claims of the source papers at $\dhead = 64$
+using a suite of nine tests implemented in
+\texttt{turboquant/validate\_paper.py}.
+All tests use seed 42 and run on a single RTX~4060 Laptop GPU.
+Table~\ref{tab:theorem_tests} summarizes the results; the full console
+output is reproduced in Appendix~\ref{app:console}.
+
+\begin{table}[ht]
+\vspace{-4pt}
+\centering
+\caption{Theorem validation results.
+All nine tests pass at $\dhead = 64$, confirming that the core
+mathematical properties established in the source papers hold at
+this smaller dimension.
+Values are measured on the RTX~4060 with seed~42.}
+\label{tab:theorem_tests}
+\footnotesize
+\begin{tabular}{@{}c>{\raggedright\arraybackslash}p{4.8cm}ccc@{}}
+\toprule
+\textbf{Test} & \textbf{Property} & \textbf{Measured} & \textbf{Threshold} & \textbf{Result} \\
+\midrule
+1 & Orthogonal rotation preserves inner products
+  & $1.94 \times 10^{-7}$ (max diff) & $< 10^{-4}$ & Pass \\
+2 & Rotated coordinates follow $\mathrm{Beta}(0.5, 31.5)$
+  & $a{=}0.498$, $b{=}32.121$ & $|a{-}0.5|{<}0.1$, $|b{-}31.5|{<}2$ & Pass \\
+3 & TurboQuantMSE distortion $<$ 15\% of energy
+  & 0.0091 & $< 0.15$ & Pass \\
+4 & QJL inner product estimator is unbiased
+  & 0.0001 (mean bias) & $|{}\cdot{}| < 0.01$ & Pass \\
+5 & Compression ratio 3.0--3.5$\times$ at 4-bit
+  & 3.20$\times$ & $[3.0, 3.5]$ & Pass \\
+6 & Outlier splitting MSE $<$ flat 3-bit MSE
+  & 0.01157 vs.\ 0.03343 & outlier $<$ flat & Pass \\
+7 & MC-GRM recall $\geq$ baseline recall
+  & 97.50\% vs.\ 96.67\% & GRM $\geq$ flat & Pass \\
+8 & WHT MSE / Shannon ratio $\leq 2.7$
+  & 2.337 & $\leq 2.7$ & Pass \\
+9 & MC-GRM PPL $<$ baseline PPL (WikiText-103)
+  & 21.90 vs.\ 81.95 & GRM $<$ standard & Pass \\
+\bottomrule
+\end{tabular}
+% Source: README.md lines 111--151 (console output block);
+%   Test 1: max diff = 1.94e-07
+%   Test 2: a=0.498, b=32.121
+%   Test 3: distortion = 0.0091
+%   Test 4: bias = 0.0001
+%   Test 5: CR = 3.20
+%   Test 6: outlier MSE = 0.011565, flat MSE = 0.033429
+%   Test 7: MC recall = 97.50%, flat recall = 96.67%
+%   Test 8: WHT MSE = 0.009130, Shannon = 0.003906, ratio = 2.3372
+%   Test 9: GRM PPL = 21.904, standard PPL = 81.946
+\vspace{-4pt}
+\end{table}
+
+\paragraph{Discussion.}
+Test~2 is particularly informative: the fitted Beta parameters
+$a = 0.498$ and $b = 32.121$ closely match the theoretical targets of
+$a = 0.5$ and $b = 31.5$ (where $b = d/2 - 0.5 = 31.5$ for $d = 64$),
+confirming that the distributional assumptions underlying TurboQuant's
+Lloyd-Max codebook design remain valid at this dimension.
+
+Test~8 shows that the WHT quantizer achieves MSE within $2.34{\times}$
+of the Shannon rate-distortion lower bound $D^*(R) = 2^{-2R}$ for
+unit-variance Gaussian sources at four-bit.
+Across two to five bits, this ratio ranges from 1.83 to 2.46
+(see Section~\ref{sec:results:distortion} for the full curve), well
+within the theoretical $\leq 4{\times}$ bound established for scalar
+quantizers.
+% Source: results/distortion_bounds.json → ratio_wht values:
+%   2-bit: 1.833, 3-bit: 2.137, 4-bit: 2.336, 5-bit: 2.457

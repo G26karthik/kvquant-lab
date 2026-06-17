@@ -1,0 +1,80 @@
+% =========================================================================
+% related_work.tex
+% =========================================================================
+
+\section{Related Work and Novelty Positioning}
+\label{sec:related}
+
+% -----------------------------------------------------------------
+\subsection{KV Cache Quantization}
+
+A substantial body of work addresses KV cache compression.
+KIVI~\cite{liu2024kivi} applies asymmetric two-bit quantization with
+per-channel tuning, achieving strong results on instruction-following
+benchmarks.
+KVQuant~\cite{hooper2024kvquant} targets 10M-token contexts via
+sensitivity-aware per-channel quantization with nuq (non-uniform
+quantization) codebooks.
+AWQ~\cite{lin2024awq} focuses on activation-aware weight quantization
+but its per-channel scaling insights extend to cache compression.
+TurboQuant~\cite{zandieh2025turboquant} and
+PolarQuant~\cite{han2025polarquant} advance this line by exploiting
+rotation-induced distributional regularity for data-oblivious
+compression.
+All of the above validate on models with $\dhead \geq 128$.
+
+% -----------------------------------------------------------------
+\subsection{Community Findings on CLT Convergence at Small Head Dimensions}
+
+Two community forks of TurboQuant have informally documented degraded
+performance at $\dhead = 64$.
+The AmesianX implementation~\cite{amesianx2025turboquant} for
+\texttt{llama.cpp} includes an auto-fallback mechanism that reverts the
+Key cache to \texttt{q8\_0} quantization when $\dhead = 64$, on the
+grounds that CLT convergence is insufficient for the WHT rotation to
+yield the expected Beta distribution.
+The OnlyTerp fork~\cite{onlyterp2025turboquant} similarly documents
+that the QJL residual correction introduces variance that outweighs
+its bias-removal benefit at $\dhead \leq 64$.
+
+These are non-peer-reviewed software observations, not systematic
+empirical studies.
+They do not propose a principled correction beyond falling back to
+a different quantization format, and they do not test
+cross-architecture combinations with Memory Caching.
+
+% -----------------------------------------------------------------
+\subsection{Novelty Claims}
+
+I state precisely what is and is not novel in this work.
+
+\paragraph{What is known.}
+The observation that QJL residual correction degrades at small head
+dimensions has been noted informally in community
+implementations~\cite{amesianx2025turboquant, onlyterp2025turboquant}
+and in discussions around the vLLM inference engine.
+The general principle that CLT convergence weakens at lower
+dimensionality is well established in probability theory.
+
+\paragraph{Contributions.}
+
+To my knowledge, no published work has proposed:
+\begin{enumerate}[noitemsep,topsep=1pt,parsep=0pt,partopsep=0pt]
+\item A systematic empirical characterization of TurboQuant,
+      QJL, PolarQuant, and FibQuant failure modes specifically at
+      $\dhead = 64$, with controlled comparisons across six
+      quantization schemes.
+\item An Adaptive QJL mechanism that auto-disables the residual
+      correction based on head dimension, rather than falling back
+      to a different quantization format entirely.
+\item MC-TurboQuant: a combination of WHT-based vector quantization
+      with GRM segmented caching from the Memory Caching framework.
+\item An empirical demonstration that FibQuant-style angular codebooks
+      collapse at $d = 64$, with quantitative comparison to scalar
+      alternatives.
+\end{enumerate}
+
+All novelty claims are hedged: I state ``to my knowledge'' because
+web searches, while thorough, cannot guarantee completeness.
+If any of the above contributions have been independently proposed
+elsewhere, I welcome corrections.

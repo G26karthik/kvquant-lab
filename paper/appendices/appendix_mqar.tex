@@ -1,0 +1,40 @@
+% =========================================================================
+% appendix_mqar.tex — Appendix C
+% =========================================================================
+
+\section{MQAR Results}
+\label{app:mqar}
+
+Table~\ref{tab:mqar} presents the full Multi-Query Associative Recall
+(MQAR) results.
+Accuracy is 0\% across nearly all conditions, with only sporadic
+non-zero values (10\% for Baseline and GRM at sequence length 128 with
+8~key-value pairs).
+
+As discussed in Section~\ref{sec:results:mqar}, this null result
+reflects the base model's inability to parse the synthetic MQAR format,
+not a failure of the quantization or memory-caching implementation.
+The original Memory Caching paper~\cite{behrouz2026mc} trains models
+from scratch on MQAR data; GPT-2 Medium was not trained on this task.
+
+\begin{table}[H]
+\centering
+\caption{MQAR accuracy (\%) on GPT-2 Medium across four aggregation schemes, three sequence lengths, and three key-value pair counts. Zero-values (represented by a mathematical dash ``---'') represent zero-shot formatting and parsing failures inherent to the base model's pre-training limitations on this synthetic task, rather than execution bugs in our quantization script. All values from \texttt{results/mc\_variants.json}.}
+\label{tab:mqar}
+\small
+\begin{tabular}{@{}lccccccccc@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{Seq.\ 64}} &
+  \multicolumn{3}{c}{\textbf{Seq.\ 128}} &
+  \multicolumn{3}{c}{\textbf{Seq.\ 256}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+\textbf{Scheme} & 4 & 8 & 16 & 4 & 8 & 16 & 4 & 8 & 16 \\
+\midrule
+Baseline & --- & --- & --- & --- & 10  & --- & --- & --- & --- \\
+RM       & --- & --- & --- & --- & --- & --- & --- & --- & --- \\
+GRM      & --- & --- & --- & --- & 10  & --- & --- & --- & --- \\
+SSC      & --- & --- & --- & --- & --- & --- & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+% Source: results/mc_variants.json → mqar_results — all values verbatim
+\end{table}

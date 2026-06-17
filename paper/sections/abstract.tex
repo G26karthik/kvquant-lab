@@ -1,0 +1,35 @@
+% =========================================================================
+% abstract.tex
+% =========================================================================
+
+\begin{abstract}
+Recent Key-Value (KV) cache quantization
+methods, including TurboQuant, Quantized Johnson-Lindenstrauss (QJL), PolarQuant,
+and Memory Caching, have demonstrated strong empirical results on large
+language models with attention head dimension $\dhead \geq 128$.
+Whether these methods generalize to smaller head dimensions remains
+unexplored.
+%
+I present a systematic empirical evaluation at $\dhead = 64$ using
+GPT-2 Medium (345M parameters) on a single NVIDIA RTX~4060 Laptop GPU.
+I identify two failure modes at this scale: the QJL residual correction
+introduces variance that degrades retrieval quality, and FibQuant angular
+codebooks collapse to only four directions at four-bit precision.
+%
+I propose two corrections.
+First, a simple fallback heuristic that disables QJL residual estimation below
+$\dhead = 128$ achieves 67.4\% nearest-neighbor Recall@1 versus 38.8\%
+for flat TurboQuant at $3.2{\times}$ compression.
+Second, MC-TurboQuant combines Walsh-Hadamard Transform (WHT) vector
+quantization with Gated Residual Memory (GRM), maintaining 97.5\%
+average Needle-in-a-Haystack (NIAH) recall under quantization.
+%
+Empirical distortion remains within $1.83$--$2.46{\times}$ of the
+Shannon lower bound across two to five bits.
+A from-scratch training experiment reproduces the Memory Caching paper's
+core finding at 15M-parameter scale (21.9 versus 81.9 perplexity).
+%
+This study is limited to a single model at $\dhead = 64$ without fused
+CUDA kernels; cross-dimension generalization to $\dhead = 128$ was not
+evaluated.
+\end{abstract}

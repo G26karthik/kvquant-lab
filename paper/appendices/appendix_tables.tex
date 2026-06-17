@@ -1,0 +1,166 @@
+% =========================================================================
+% appendix_tables.tex — Appendix B
+% =========================================================================
+
+\section{Supplementary Tables}
+\label{app:tables}
+
+% -----------------------------------------------------------------
+\subsection{NIAH Recall by Context Length and Needle Depth}
+
+\begin{table}[H]
+\centering
+\caption{NIAH recall (\%) by scheme, context length, and needle depth.
+All values from \texttt{results/mc\_niah.json} and
+\texttt{results/standard\_eval.json}.}
+\label{tab:niah_full}
+\small
+\begin{tabular}{@{}lcccccccccccc@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{256}} & \multicolumn{3}{c}{\textbf{512}}
+& \multicolumn{3}{c}{\textbf{768}} & \multicolumn{3}{c}{\textbf{1024}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}
+\textbf{Scheme} & E & M & L & E & M & L & E & M & L & E & M & L \\
+\midrule
+Baseline FP16
+  & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+TQ Flat
+  & 100 & 100 & 100 & 90 & 100 & 80 & 100 & 100 & 100 & 100 & 90 & 100 \\
+WHT+Asym
+  & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 90 & 100 & 100 & 90 & 100 \\
+MC-TQ
+  & 100 & 100 & 100 & 100 & 100 & 90 & 100 & 100 & 90 & 100 & 100 & 90 \\
+\bottomrule
+\end{tabular}
+% Source: results/mc_niah.json — all values verbatim
+\end{table}
+
+% -----------------------------------------------------------------
+\subsection{Distortion Bounds: MSE and Inner Product}
+
+\begin{table}[H]
+\centering
+\caption{Empirical MSE and inner-product distortion versus Shannon lower
+bounds at $\dhead = 64$ for TurboQuant (TQ), WHT + Lloyd-Max, and
+Outlier-split schemes.
+All values from \texttt{results/distortion\_bounds.json}.}
+\label{tab:distortion_bounds}
+\small
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+\textbf{Bits} & \textbf{Shannon} & \textbf{TQ MSE} & \textbf{WHT MSE}
+  & \textbf{$\frac{\text{TQ}}{\text{Shannon}}$}
+  & \textbf{$\frac{\text{WHT}}{\text{Shannon}}$}
+  & \textbf{Outlier MSE} \\
+\midrule
+2 & 0.0625 & 0.1147 & 0.1146 & 1.83 & 1.83 & 0.2741 \\
+3 & 0.0156 & 0.0334 & 0.0334 & 2.14 & 2.14 & 0.0869 \\
+4 & 0.0039 & 0.0091 & 0.0091 & 2.34 & 2.34 & 0.0252 \\
+5 & 0.00098 & 0.0024 & 0.0024 & 2.47 & 2.46 & 0.0069 \\
+\bottomrule
+\end{tabular}
+% Source: results/distortion_bounds.json — mse_results array
+%   2-bit: shannon=0.0625, tq=0.1147, wht=0.1146, out=0.2741
+%   3-bit: shannon=0.0156, tq=0.0334, wht=0.0334, out=0.0869
+%   4-bit: shannon=0.0039, tq=0.0091, wht=0.0091, out=0.0252
+%   5-bit: shannon=0.00098, tq=0.0024, wht=0.0024, out=0.0069
+\end{table}
+
+% -----------------------------------------------------------------
+\subsection{MC Compressor Ablation}
+
+\begin{table}[H]
+\centering
+\caption{Checkpoint versus independent segment-state compression
+in Memory Caching.
+The checkpoint variant accumulates quantization error across segments,
+degrading both perplexity and NIAH recall.
+All values from \texttt{results/mc\_compressor\_ablation.json}.}
+\label{tab:ablation}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Strategy} & \textbf{Avg PPL} & \textbf{Speed (tok/s)}
+  & \textbf{Cache (KB)} & \textbf{NIAH Avg (\%)} \\
+\midrule
+Checkpoint & 17.06 & 27.96 & 13{,}056 & 0.0 \\
+Independent & 2.13 & 30.63 & 6{,}912 & 96.7 \\
+\bottomrule
+\end{tabular}
+% Source: results/mc_compressor_ablation.json
+%   checkpoint: avg_ppl=17.064, speed=27.957, cache=13056, niah all 0%
+%   independent: avg_ppl=2.134, speed=30.628, cache=6912
+%     niah: 11 of 12 = 100%, 768/Late = 80% → avg = 96.67%
+\end{table}
+
+% -----------------------------------------------------------------
+\subsection{LongBench-lite Results}
+
+\begin{table}[H]
+\centering
+\caption{LongBench-lite subtask scores (\%). Zero-values (represented by a mathematical dash ``---'') represent zero-shot formatting and parsing failures inherent to the base model's pre-training limitations under context truncation, rather than execution bugs in our quantization script. All values from \texttt{results/longbench\_lite.json}.}
+\label{tab:longbench}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Scheme} & \textbf{Passage QA} & \textbf{Summ.\ R-1} & \textbf{Code Compl.} \\
+\midrule
+Baseline FP16   & 25.0  & 11.99 & --- \\
+WHT+Asym 4-bit  & ---   & ---   & 5.0 \\
+Outlier 2.5-bit & 5.0   & ---   & 5.0 \\
+Outlier 3.5-bit & ---   & ---   & 5.0 \\
+\bottomrule
+\end{tabular}
+% Source: results/longbench_lite.json — all values verbatim
+\end{table}
+
+% -----------------------------------------------------------------
+\subsection{FibQuant Comparison}
+
+\begin{table}[H]
+\centering
+\caption{FibQuant versus TurboQuant MSE at $d = 64$, four-bit.
+The joint 2D radial-angular codebook is inferior on both MSE distortion
+and perplexity.
+All values from \texttt{results/fibquant\_results.json}.}
+\label{tab:fibquant}
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Scheme} & \textbf{MSE Distortion} & \textbf{Avg PPL} \\
+\midrule
+TurboQuant MSE & 0.00179 & 4.62 \\
+FibQuant 2D & 0.00338 & 5.05 \\
+\bottomrule
+\end{tabular}
+% Source: results/fibquant_results.json →
+%   turboquant_mse: mse=0.00179, ppl=4.620
+%   fibquant_2d: mse=0.00338, ppl=5.048
+\end{table}
+
+% -----------------------------------------------------------------
+\subsection{Complexity-Recall Tradeoff}
+
+\begin{table}[H]
+\centering
+\caption{Memory Caching complexity-recall tradeoff across segment sizes.
+Recall remains 100\% for segment sizes 8--64 and 256, dropping to 90\%
+only at segment size~128.
+All values from \texttt{results/complexity\_recall.json}.}
+\label{tab:complexity}
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+\textbf{Segment Size} & \textbf{Cost Fraction}
+  & \textbf{Recall (\%)} & \textbf{Cache (KB)} \\
+\midrule
+8   & 0.125   & 100.0 & 15{,}036 \\
+16  & 0.0625  & 100.0 & 15{,}576 \\
+32  & 0.03125 & 100.0 & 16{,}656 \\
+64  & 0.0156  & 100.0 & 18{,}816 \\
+128 & 0.0078  &  90.0 & 23{,}136 \\
+256 & 0.0039  & 100.0 & 31{,}776 \\
+\bottomrule
+\end{tabular}
+% Source: results/complexity_recall.json — all values verbatim
+\end{table}

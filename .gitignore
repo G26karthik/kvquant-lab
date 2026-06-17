@@ -13,3 +13,16 @@ Thumbs.db
 training/checkpoints/*.pt
 *.pdf
 *.pt
+
+# LaTeX build and OS-specific files
+paper/._*
+paper/arxiv_submission.zip
+paper/main_page-*.png
+paper/*.aux
+paper/*.blg
+paper/*.out
+paper/*.log
+paper/*.toc
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk

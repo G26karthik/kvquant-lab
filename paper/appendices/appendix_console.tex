@@ -1,0 +1,56 @@
+% =========================================================================
+% appendix_console.tex — Appendix A
+% =========================================================================
+
+\section{Full Console Output of Theorem Validation}
+\label{app:console}
+
+The following is the complete output of
+\texttt{python turboquant/validate\_paper.py},
+run on RTX~4060 with seed~42.
+
+\begin{small}
+\begin{verbatim}
+==========================================================
+  TurboQuant Paper Theorem Validation Suite
+==========================================================
+Test 1: Orthogonal rotation preserves inner products...
+  Max inner product difference: 1.94e-07
+  Test 1: PASS
+Test 2: Rotated coordinates follow Beta(0.5, 31.5) at d=64...
+  Fitted Beta parameters: a=0.498 (target 0.5), b=32.121 (target 31.5)
+  Test 2: PASS
+Test 3: TurboQuantMSE distortion < 15% of signal energy...
+  Average reconstruction distortion: 0.0091 (target < 0.15)
+  Test 3: PASS
+Test 4: QJL inner product estimator is unbiased...
+  Mean inner product estimation bias: 0.0001 (target absolute < 0.01)
+  Test 4: PASS
+Test 5: Compression ratio is 3.0-3.5x at 4-bit d=64...
+  Calculated compression ratio: 3.20x (target range: 3.0-3.5x)
+  Test 5: PASS
+Test 6: Outlier channel splitting MSE < Flat 3-bit MSE...
+  Outlier 2.5-bit MSE: 0.011565
+  Flat 3-bit MSE:      0.033429
+  Test 6: PASS
+Test 7: Memory Caching GRM recall >= Baseline recall...
+  Average MC-TurboQuant (GRM) recall: 97.50%
+  Average TurboQuant Flat recall:      96.67%
+  Test 7: PASS
+Test 8: WHT actual MSE / Shannon bound ratio <= 2.7...
+  WHT Actual MSE:       0.009130
+  Shannon Lower Bound:  0.003906
+  Ratio:                2.3372 (target <= 2.7)
+  Test 8: PASS
+Test 9: MC-GRM perplexity < Baseline perplexity on WikiText-103...
+  MC-GRM Perplexity:         21.904
+  Baseline PPL (Standard):  81.946
+  Test 9: PASS
+
+==========================================================
+  ALL 9 THEOREM TESTS PASSED successfully!
+==========================================================
+\end{verbatim}
+\end{small}
+
+% Source: README.md lines 111--151 (verbatim console block)

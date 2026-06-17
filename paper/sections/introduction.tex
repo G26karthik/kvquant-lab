@@ -1,0 +1,124 @@
+% =========================================================================
+% introduction.tex
+% =========================================================================
+
+\section{Introduction}
+\label{sec:introduction}
+
+The Key-Value (KV) cache is the dominant memory bottleneck during
+autoregressive inference in transformer-based language
+models~\cite{radford2019gpt2}.
+As sequence lengths grow, the cache scales linearly in both the number of
+layers and the context window, consuming memory that often exceeds the
+model weights themselves.
+Several recent works address this bottleneck through vector quantization
+of KV embeddings.
+
+TurboQuant~\cite{zandieh2025turboquant} applies a random orthogonal
+rotation, implemented via a Walsh-Hadamard Transform (WHT) or QR
+decomposition, to KV vectors, inducing a concentrated
+$\mathrm{Beta}(0.5,\, d/2 - 0.5)$ distribution on each coordinate.
+Pre-computed Lloyd-Max scalar quantizers~\cite{lloyd1982least} then
+compress each coordinate independently, achieving near-optimal
+distortion within a factor of ${\approx}2.7$ of the Shannon
+bound~\cite{shannon1959coding}.
+A secondary one-bit Quantized Johnson-Lindenstrauss
+(QJL)~\cite{zandieh2024qjl} residual correction removes the bias
+that Mean Squared Error (MSE)-optimal quantizers introduce in inner-product
+estimation.
+PolarQuant~\cite{han2025polarquant} extends this line by transforming
+embeddings into polar coordinates whose angles follow a tightly bounded
+distribution, eliminating explicit normalization overhead.
+Memory Caching~\cite{behrouz2026mc} proposes a complementary approach:
+rather than compressing vectors, it augments recurrent models with
+checkpointed hidden-state caches, interpolating between the fixed
+memory of Recurrent Neural Networks (RNNs) and the growing memory of
+transformers.
+
+\paragraph{The gap.}
+All four papers validate their methods exclusively on models with
+attention head dimension $\dhead \geq 128$: Llama-3.1-8B, Mistral-7B,
+and Qwen-2.5-7B for TurboQuant and PolarQuant; models of 760M to 1.3B
+parameters trained on 30--100 billion tokens for Memory Caching.
+No published evaluation exists at $\dhead = 64$, which is the head
+dimension of GPT-2~\cite{radford2019gpt2} and several other
+widely-studied architectures.
+This omission matters because TurboQuant's theoretical guarantees rely on
+Central Limit Theorem (CLT) convergence of the rotated coordinates,
+and this convergence weakens as dimensionality decreases.
+Community implementations have informally observed degraded performance
+at $\dhead = 64$~\cite{amesianx2025turboquant, onlyterp2025turboquant},
+but no systematic study has characterized the failure modes, proposed
+principled corrections, or tested cross-architecture combinations at
+this scale.
+
+\paragraph{Proxy evaluation scope.}
+Evaluating KV cache quantization on GPT-2 Medium exposes an inherent methodological proxy limitation. KV cache quantization is designed to alleviate memory pressure during massive, long-context retrieval, whereas GPT-2 Medium is hard-capped at a context window of only 1{,}024 tokens. Consequently, this study does not present a direct solution for large-scale production deployment bottlenecks. Instead, this work is framed as an isolated investigation into the geometric and statistical failure modes of vector quantization when compressed into small, low-dimensional spaces ($\dhead = 64$).
+
+\paragraph{Contributions.}
+This paper presents six contributions, all evaluated on GPT-2
+Medium (345M parameters, $\dhead = 64$) using a single NVIDIA RTX~4060
+Laptop GPU with PyTorch~2.5.1:
+
+\begin{enumerate}[noitemsep,topsep=1pt,parsep=0pt,partopsep=0pt]
+
+\item \textbf{Adaptive QJL Fallback Heuristic.}
+I implement a simple empirical fallback heuristic that disables the QJL residual correction when the head dimension is below $\dhead = 128$. Because QJL's variance doubles at $\dhead = 64$, bypassing the residual calculation entirely for low dimensions is a practical engineering solution that prevents performance degradation. At four-bit precision with $3.2{\times}$ compression, this fallback raises nearest-neighbor Recall@1 from 38.8\% (flat TurboQuant) to 67.4\% (WHT + Asymmetric Lloyd-Max).
+% Source: results/nn\_search.json → flat\_turboquant/4/recall\_1 = 38.8;
+%         results/nn\_search.json → wht\_asym/4/recall\_1 = 67.4
+
+\item \textbf{Outlier Channel Splitting at 2.5-bit.}
+I show that allocating extra precision to outlier channels yields a
+Pareto improvement over flat three-bit quantization: lower short-context
+average perplexity (4.68 versus 4.69) and a smaller cache footprint
+(957\,KB versus 1{,}218\,KB).
+% Source: results/outlier\_results.json → average\_perplexity
+%         (outlier\_2.5 = 4.676, flat\_3 = 4.691);
+%         average\_cache\_size\_kb (outlier\_2.5 = 957, flat\_3 = 1218)
+
+\item \textbf{FibQuant negative result.}
+A joint two-dimensional radial-angular codebook in the style of
+PolarQuant/FibQuant degrades to only four angular directions at four-bit
+under $d = 64$, and scalar MSE quantization outperforms it at every
+tested bit budget.
+% Source: README.md → Finding 5; results/fibquant\_results.json
+
+\item \textbf{MC-TurboQuant.}
+I combine WHT + Asymmetric vector quantization with Gated Residual
+Memory (GRM) from the Memory Caching framework, producing the first
+(to my knowledge) cross-architecture fusion of these two systems.
+The combined scheme maintains 97.5\% average Needle-in-a-Haystack
+(NIAH) recall across context lengths 256--1{,}024 with $3.2{\times}$
+compression and no perplexity regression relative to the non-MC
+quantized variant.
+% Source: results/mc\_niah.json → mc\_turboquant average;
+%         turboquant/validate\_paper.py Test 7 output (97.50\%)
+
+\item \textbf{Rotation profiling.}
+I profile WHT and QR rotation latencies at $d = 64$ and show that
+unfused WHT in pure PyTorch is slower than naive quantization, despite
+the theoretical latency advantage of fast Hadamard transforms. This finding
+demonstrates the necessity of fused CUDA kernels for practical
+deployment.
+% Source: results/rotation\_profile.json; README.md → Limitation bullet 2
+
+\item \textbf{Checkpoint versus independent compressor ablation.}
+I compare the checkpointed and independent segment-state variants of
+Memory Caching, finding that independent compression achieves 100\%
+NIAH recall at most positions with lower perplexity, while the
+checkpoint variant suffers state drift that degrades both metrics.
+% Source: results/mc\_compressor\_ablation.json
+
+\end{enumerate}
+
+\noindent
+All experiments, data, and code are publicly available at \url{https://github.com/G26karthik/kvquant-lab}.
+Section~\ref{sec:background} reviews the four source papers.
+Section~\ref{sec:related} positions this work relative to the broader
+KV-cache quantization literature and informal community findings.
+Section~\ref{sec:method} details each of the six contributions.
+Section~\ref{sec:validation} summarizes the nine theorem-validation tests.
+Sections~\ref{sec:setup} and~\ref{sec:results} describe the experimental
+setup and results.
+Section~\ref{sec:limitations} states the limitations of this study,
+and Section~\ref{sec:conclusion} concludes.

@@ -1,0 +1,77 @@
+% =========================================================================
+% experimental_setup.tex
+% =========================================================================
+
+\section{Experimental Setup}
+\label{sec:setup}
+
+\paragraph{Model.}
+All inference experiments use GPT-2 Medium~\cite{radford2019gpt2}
+(345M parameters, 24 layers, 16 attention heads, $\dhead = 64$,
+maximum context length 1{,}024 tokens) loaded from the
+\texttt{gpt2-medium} checkpoint on Hugging Face.
+
+\paragraph{Hardware.}
+A single NVIDIA RTX~4060 Laptop GPU (8\,GB VRAM) running CUDA~12.x.
+
+\paragraph{Software.}
+PyTorch~2.5.1, Hugging Face Transformers, SciPy (for Beta distribution
+fitting in theorem validation).
+All quantization is implemented in pure PyTorch without fused CUDA
+or Triton kernels.
+
+\paragraph{Datasets.}
+\begin{itemize}[noitemsep,topsep=1pt,parsep=0pt,partopsep=0pt]
+\item \textbf{WikiText-2}~\cite{merity2017pointer}: Used for strided
+  perplexity evaluation with a 1{,}024-token sliding window.
+  The published full-context perplexity for GPT-2 Medium is 19.69;
+  the measured strided perplexity is 19.03.
+  This gap reflects the difference between full-document evaluation and
+  the 1{,}024-token strided window imposed by GPT-2's context limit.
+  % Source: README.md line 235 (published = 19.69);
+  %   results/final_comparison.json → Baseline FP16/wikitext_ppl = 19.03
+\item \textbf{HellaSwag}~\cite{zellers2019hellaswag}: Zero-shot sentence
+  completion accuracy (100~examples).
+\item \textbf{NIAH (Needle-in-a-Haystack):} Natural-language
+  question-answer retrieval at context lengths 256, 512, 768, and 1{,}024
+  tokens with needle placement at Early, Middle, and Late positions.
+\item \textbf{MQAR (Multi-Query Associative Recall):} Synthetic
+  key-value association task at sequence lengths 64, 128, and 256 with
+  4, 8, and 16 key-value pairs.
+\item \textbf{LongBench-lite:} Passage QA, summarization
+  (ROUGE-1), and code completion subtasks, truncated to 1{,}024 tokens.
+\item \textbf{WikiText-103:} Used for training the 15M-parameter
+  linear-attention MC-RNN models from scratch (20{,}000 steps).
+\end{itemize}
+
+\paragraph{Quantization schemes evaluated.}
+This study compares six schemes across the benchmark suite:
+\begin{enumerate}[noitemsep,topsep=1pt,parsep=0pt,partopsep=0pt]
+\item \textbf{Baseline FP16:} No quantization (16-bit floating point).
+\item \textbf{Original TurboQuant:} QR rotation + Lloyd-Max + QJL
+  residual correction, at three-bit and four-bit.
+\item \textbf{WHT + Asymmetric QJL (Adaptive):} WHT rotation +
+  Lloyd-Max, QJL residual disabled at $\dhead = 64$, at three-bit and
+  four-bit.
+\item \textbf{MC-TurboQuant:} WHT + Asymmetric four-bit combined
+  with GRM segmented caching.
+\item \textbf{Outlier Channel Splitting:} Channel-aware bit allocation
+  at 2.5-bit and 3.5-bit average rates.
+\item \textbf{FibQuant:} Joint two-dimensional radial-angular codebook
+  (tested but not included in the main comparison due to inferior
+  performance; see Section~\ref{sec:method:fibquant}).
+\end{enumerate}
+
+\paragraph{Hyperparameters.}
+All experiments use random seed~42.
+Generation benchmarks use 50~tokens with greedy decoding.
+The MC-RNN training uses a batch size of 16, learning rate $3 \times 10^{-4}$,
+and the Adam optimizer for 20{,}000 steps on WikiText-103.
+Segment sizes for Memory Caching experiments range from 8 to 256 tokens.
+Nearest-neighbor evaluation uses 500 query vectors.
+
+\paragraph{Reproducibility.}
+All benchmark scripts, model weights (via Hugging Face), and result
+JSON files are included in the repository.
+Results can be reproduced by running the scripts in the order
+documented in the repository README.

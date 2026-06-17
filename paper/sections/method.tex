@@ -1,0 +1,152 @@
+% =========================================================================
+% method.tex
+% =========================================================================
+
+\section{Method}
+\label{sec:method}
+
+This section describes the six contributions listed in
+Section~\ref{sec:introduction}, each in a separate subsection.
+
+% -----------------------------------------------------------------
+\subsection{Adaptive QJL: An Empirical Fallback Heuristic}
+\label{sec:method:adaptive}
+
+TurboQuant's two-stage pipeline applies an MSE-optimal scalar quantizer followed by a one-bit QJL residual correction. The QJL stage eliminates the bias in inner-product estimation but introduces variance proportional to $1/d$. At $\dhead = 128$, this variance is small enough that the net effect is beneficial. However, at $\dhead = 64$, the variance doubles. Because the softmax attention mechanism is exponentially sensitive to score perturbations, even zero-mean noise can systematically shift attention mass toward incorrect tokens.
+
+Rather than an advanced selection pipeline, the Adaptive QJL implementation is an empirical fallback heuristic: a simple conditional check that skips the QJL residual stage entirely if $\dhead < 128$ and applies only the WHT + Lloyd-Max MSE quantizer. Bypassing the residual calculation for low dimensions is a practical structural constraint that avoids high-variance noise. Under this fallback, the key and value caches use identical quantization, avoiding the asymmetric K/V treatment of other implementations~\cite{amesianx2025turboquant}.
+
+This empirical fallback raises four-bit nearest-neighbor Recall@1 from 38.8\% (flat TurboQuant with QJL) to 67.4\% (WHT + Asymmetric Lloyd-Max without QJL), a relative improvement of 73.7\%.
+% Source: results/nn_search.json →
+%   flat_turboquant/4/recall_1 = 38.8;
+%   wht_asym/4/recall_1 = 67.4
+
+At three-bit, Recall@1 improves from 14.0\% to 46.4\% ($+231\%$
+relative).
+% Source: results/nn_search.json →
+%   flat_turboquant/3/recall_1 = 14.0;
+%   wht_asym/3/recall_1 = 46.4
+
+WikiText-2 strided perplexity at four-bit is 23.95 for WHT + Asymmetric
+versus 24.71 for flat TurboQuant, a modest improvement.
+% Source: results/final_comparison.json →
+%   WHT + Asymmetric QJL (4-bit)/wikitext_ppl = 23.95;
+%   Original TurboQuant (4-bit)/wikitext_ppl = 24.71
+
+% -----------------------------------------------------------------
+\subsection{Outlier Channel Splitting at 2.5-Bit}
+\label{sec:method:outlier}
+
+Following the outlier channel splitting strategy described in
+TurboQuant~\cite{zandieh2025turboquant}, I identify channels whose
+activation variance exceeds a threshold and allocate additional precision
+to them.
+At an average bit budget of 2.5 bits, outlier channels receive four-bit
+quantization while remaining channels use two-bit.
+
+The result is a Pareto improvement over flat three-bit quantization.
+Outlier 2.5-bit achieves a short-context average perplexity of 4.676
+versus 4.691 for flat three-bit, while reducing the cache footprint from
+1{,}218\,KB to 957\,KB.
+% Source: results/outlier_results.json →
+%   average_perplexity: outlier_2.5 = 4.676, flat_3 = 4.691;
+%   average_cache_size_kb: outlier_2.5 = 957, flat_3 = 1218
+
+\paragraph{Note on perplexity measurement.}
+Because the outlier-split variants require a different token-window evaluation protocol, their perplexity metrics are not directly comparable to the WikiText-2 full-context baselines. These values represent a short-context average computed over four test prompts of approximately 50 tokens each.
+
+% -----------------------------------------------------------------
+\subsection{FibQuant at \texorpdfstring{$d = 64$}{d=64}: A Negative Result}
+\label{sec:method:fibquant}
+
+PolarQuant~\cite{han2025polarquant} proposes FibQuant, a joint
+two-dimensional radial-angular codebook that uses
+Fibonacci/Roberts-Kronecker quasi-uniform directions for the angular
+component and Beta-quantile radii.
+At high dimensions, this design exploits the geometric structure of
+the sphere to achieve lower distortion than scalar quantizers at
+equivalent bit rates.
+
+At $d = 64$ and four-bit precision, however, the codebook degrades
+to only four angular directions.
+The limited angular resolution renders the two-dimensional codebook
+strictly inferior to scalar MSE quantization: the FibQuant MSE distortion
+is 0.00338 versus 0.00179 for TurboQuant MSE, and the average
+perplexity is 5.05 versus 4.62.
+% Source: results/fibquant_results.json →
+%   mathematical_fidelity: fibquant_2d/mse_distortion = 0.00338,
+%                          turboquant_mse/mse_distortion = 0.00179;
+%   average_perplexity: fibquant_2d = 5.048, turboquant_mse = 4.620
+
+This negative result demonstrates that angular quantization requires
+$\dhead \gtrsim 128$ to yield retrieval advantages over scalar
+alternatives, consistent with the theoretical expectation that
+sphere-packing efficiency improves with dimensionality.
+
+% -----------------------------------------------------------------
+\subsection{MC-TurboQuant: Cross-Architecture Combination}
+\label{sec:method:mc}
+
+I combine the WHT + Asymmetric vector quantization scheme
+(Section~\ref{sec:method:adaptive}) with the GRM variant of
+Memory Caching~\cite{behrouz2026mc}.
+The input sequence is divided into segments; at each boundary, the
+current KV cache state is compressed using WHT + Asymmetric four-bit
+quantization and appended to the growing memory.
+During attention, the model attends over both the current segment's
+uncompressed cache and all past compressed checkpoints, with
+similarity-based gating controlling memory decay.
+
+MC-TurboQuant achieves the same WikiText-2 strided perplexity as the
+non-MC quantized variant (23.95) with $3.2{\times}$ compression.
+% Source: results/final_comparison.json →
+%   MC-TurboQuant (4-bit)/wikitext_ppl = 23.95
+
+The average NIAH recall across all context lengths (256--1{,}024) and
+needle depths (Early, Middle, Late) is 97.5\%, compared to 96.7\% for
+flat TurboQuant.
+% Source: turboquant/validate_paper.py Test 7 output →
+%   MC-TurboQuant (GRM) recall: 97.50%;
+%   TurboQuant Flat recall: 96.67%
+
+To my knowledge, no prior work has combined TurboQuant-style vector
+quantization with Memory Caching's recurrent memory architecture.
+
+% -----------------------------------------------------------------
+\subsection{Rotation Profiling}
+\label{sec:method:rotation}
+
+I profile the latency of WHT and QR rotations at $d = 64$ in pure
+PyTorch (without fused CUDA kernels).
+The WHT has theoretical complexity $O(d \log d)$ versus $O(d^2)$ for
+QR, but in practice the unfused PyTorch WHT is slower due to the
+overhead of multiple sequential butterfly operations.
+
+This indicates that the latency benefits of TurboQuant~\cite{zandieh2025turboquant} require fused CUDA/Triton kernels, which were unavailable for this study.
+% Source: results/rotation_profile.json; README.md → Limitation bullet 2
+
+% -----------------------------------------------------------------
+\subsection{Checkpoint Versus Independent Compressor Ablation}
+\label{sec:method:ablation}
+
+Memory Caching~\cite{behrouz2026mc} describes two strategies for
+managing segment-level cache states: \emph{checkpointing} (warm-starting
+each segment from the previous segment's final state) and
+\emph{independent} compression (each segment starts from a fresh state).
+
+I ablate these strategies at $d = 64$.
+The independent variant achieves 100\% NIAH recall at most positions,
+an average perplexity of 2.13, and a cache footprint of 6{,}912\,KB.
+The checkpoint variant suffers from state drift, producing 0\% NIAH
+recall across all positions and an inflated average perplexity of 17.06
+with a larger cache of 13{,}056\,KB.
+% Source: results/mc_compressor_ablation.json →
+%   independent: avg_perplexity = 2.134, avg_cache_size_kb = 6912,
+%                niah all 100% except 768/Late = 80%;
+%   checkpoint:  avg_perplexity = 17.064, avg_cache_size_kb = 13056,
+%                niah all 0%
+
+This result demonstrates that warm-starting quantized cache states
+across segments causes accumulated error to compound, consistent with
+the independent-compression recommendation in Section~3.4 of the
+Memory Caching paper.

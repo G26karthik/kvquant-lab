@@ -1,0 +1,63 @@
+% =========================================================================
+% limitations.tex
+% =========================================================================
+
+\section{Limitations}
+\label{sec:limitations}
+
+I state the limitations of this study explicitly.
+
+\paragraph{Head dimension mismatch.}
+All experiments use GPT-2 Medium with $\dhead = 64$.
+The TurboQuant~\cite{zandieh2025turboquant} and
+PolarQuant~\cite{han2025polarquant} papers target Llama-3.1-8B,
+Mistral-7B, and Qwen-2.5-7B, which have $\dhead = 128$.
+Absolute perplexity numbers are not comparable across these settings.
+The relative rankings among schemes within this $\dhead = 64$ evaluation
+are valid, but whether the Adaptive QJL correction improves or is
+unnecessary at $\dhead = 128$ remains untested.
+Cross-dimension generalization of the Adaptive QJL correction to
+$\dhead = 128$ was not evaluated in this study and is reserved for
+future work.
+
+\paragraph{No fused CUDA kernels.}
+All quantization is implemented in pure PyTorch.
+The WHT has theoretical complexity $O(d \log d)$ versus $O(d^2)$ for
+QR rotation, but in practice the unfused PyTorch WHT is slower than
+naive quantization due to the overhead of sequential butterfly
+operations.
+% Source: results/rotation_profile.json; README.md → Limitation bullet 2
+This finding is documented in the rotation profiling results
+(\texttt{results/rotation\_profile.json}) and means that the latency
+advantages claimed in TurboQuant cannot be realized without kernel
+fusion.
+
+\paragraph{Training-scale mismatch for MC-RNN.}
+The from-scratch MC-RNN training experiment uses a 15M-parameter
+linear-attention model trained on WikiText-103.
+The Memory Caching paper~\cite{behrouz2026mc} trains models of
+760M to 1.3B parameters on 30--100 billion tokens.
+The experiment reproduces the core finding (GRM perplexity 21.9 versus
+standard linear attention perplexity 81.9) but at a scale that is
+orders of magnitude smaller than the original.
+% Source: results/mc_training_results.json →
+%   perplexity: grm = 21.904, standard = 81.946;
+%   README.md line 236 (scale comparison)
+
+\paragraph{Context window proxy limit.}
+A central limitation of this study is the mismatch between the intended application of KV cache quantization and the evaluation model. Quantization is designed for long-context retrieval spanning tens or hundreds of thousands of tokens. However, the evaluation relies on GPT-2 Medium, which is hard-capped at a context window of 1{,}024 tokens. This study functions as a proxy evaluation, focusing on the geometric and statistical failure modes of quantization in low-dimensional spaces ($\dhead = 64$) rather than validating long-context engineering stability at scale.
+
+\paragraph{LongBench-lite truncation.}
+LongBench-lite scores are low across all schemes (passage QA
+$\leq 25\%$, summarization ROUGE-1 $\leq 12\%$, code completion
+$\leq 5\%$) because GPT-2 Medium's 1{,}024-token context limit
+truncates most examples.
+% Source: results/longbench_lite.json →
+%   Baseline: passage_qa=25.0, summarization=11.99, code=0.0
+These scores reflect the model's context limitation, not the quality
+of any quantization scheme.
+
+\paragraph{Single-model evaluation.}
+I evaluate on a single model (GPT-2 Medium).
+Conclusions about scheme rankings may not transfer to architectures with
+different attention patterns, embedding distributions, or training data.

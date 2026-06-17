@@ -1,0 +1,102 @@
+% =========================================================================
+% background.tex
+% =========================================================================
+
+\section{Background}
+\label{sec:background}
+
+This section reviews the four source papers whose methods are evaluated
+at $\dhead = 64$.
+
+% -----------------------------------------------------------------
+\subsection{TurboQuant and PolarQuant: Rotation-Based Scalar Quantization}
+\label{sec:bg:turboquant}
+
+TurboQuant~\cite{zandieh2025turboquant} compresses KV cache vectors
+through a two-stage pipeline.
+In the first stage, each $d$-dimensional vector $\mathbf{x}$ is
+multiplied by a random orthogonal matrix $\Pi$, producing
+$\mathbf{y} = \Pi\mathbf{x}$.
+By the properties of random rotations on the unit sphere, each squared
+coordinate $y_i^2$ follows a
+$\mathrm{Beta}(1/2,\, d/2 - 1/2)$ distribution.
+For large $d$, the CLT implies that each $y_i$ is
+approximately Gaussian with known variance, enabling the use of
+pre-computed, data-oblivious Lloyd-Max scalar
+quantizers~\cite{lloyd1982least}.
+TurboQuant implements the rotation via either a QR decomposition of a
+random Gaussian matrix or a WHT composed with a random sign flip.
+The WHT variant admits $O(d \log d)$ computation versus $O(d^2)$ for
+full QR, though this advantage requires fused kernel support to realize
+in practice.
+
+In the second stage (TurboQuantProd), a one-bit QJL
+transform~\cite{zandieh2024qjl} is applied to the quantization residual.
+This corrects the systematic bias that MSE-optimal scalar quantizers
+introduce when estimating inner products, yielding an unbiased estimator
+of $\langle \mathbf{x}, \mathbf{x}' \rangle$ from the quantized
+representations.
+
+PolarQuant~\cite{han2025polarquant} pursues a related strategy: after
+random preconditioning, it converts coordinate pairs to polar form
+$(r, \theta)$ and quantizes the resulting angles, whose distribution
+is analytically computable and tightly concentrated.
+Both TurboQuant and PolarQuant report experimental validation
+exclusively on models with $\dhead \geq 128$.
+
+% -----------------------------------------------------------------
+\subsection{QJL: One-Bit Quantized Johnson-Lindenstrauss Transform}
+\label{sec:bg:qjl}
+
+The QJL transform~\cite{zandieh2024qjl} projects a vector
+$\mathbf{x} \in \mathbb{R}^d$ using a random matrix
+$\mathbf{S} \in \mathbb{R}^{m \times d}$ and retains only the sign
+bits $\mathrm{sign}(\mathbf{S}\mathbf{x})$.
+By the Johnson-Lindenstrauss lemma~\cite{johnson1984extensions},
+distances are approximately preserved under random projection.
+The key insight of QJL is an asymmetric inner-product estimator:
+applying the quantized projection to one vector and a standard
+(unquantized) JL projection to the query yields an unbiased estimate
+of their inner product with zero storage overhead for quantization
+constants.
+
+When used as a residual correction atop TurboQuant's MSE quantizer,
+QJL adds one bit per coordinate.
+At $\dhead = 128$, the variance of this estimator is small relative to
+the signal.
+However, the variance scales as $O(1/d)$; at $\dhead = 64$, the
+variance doubles relative to $\dhead = 128$, and the exponential
+sensitivity of softmax attention amplifies these fluctuations.
+This variance-versus-bias tradeoff is the mechanism behind the failure
+mode documented in Section~\ref{sec:method:adaptive}.
+
+% -----------------------------------------------------------------
+\subsection{Memory Caching: Segment Checkpointing with Growing Memory}
+\label{sec:bg:mc}
+
+Memory Caching (MC)~\cite{behrouz2026mc} augments recurrent models by
+periodically checkpointing their hidden states.
+The input sequence is divided into segments of size $S$; at each segment
+boundary, the current hidden state is appended to a growing cache.
+During attention, the model attends over both the recurrent state and
+all cached checkpoints, interpolating between the $O(L)$ complexity of
+RNNs and the $O(L^2)$ complexity of transformers.
+
+Behrouz et al.\ propose four MC variants:
+\begin{itemize}[noitemsep,topsep=1pt,parsep=0pt,partopsep=0pt]
+\item \textbf{Residual Memory (RM):} Caches the change in hidden state
+  between segments, so that older memories decay naturally.
+\item \textbf{Gated Residual Memory (GRM):} Applies a similarity-based
+  gate that modulates the update magnitude, preventing catastrophic
+  forgetting of relevant past states.
+\item \textbf{Memory Soup:} Uses softmax-weighted aggregation across
+  multiple memory channels.
+\item \textbf{Sparse Selective Caching (SSC):} Caches only top-$k$
+  entries ranked by query-key similarity.
+\end{itemize}
+
+The original paper trains models of 760M to 1.3B parameters from
+scratch on 30--100 billion tokens and evaluates on Multi-Query
+Associative Recall (MQAR) and language modeling.
+This study applies MC at inference time to a pre-trained GPT-2 Medium
+model and trains a 15M-parameter variant from scratch on WikiText-103.

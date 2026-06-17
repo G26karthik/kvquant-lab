@@ -1,0 +1,34 @@
+% =========================================================================
+% conclusion.tex
+% =========================================================================
+
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+
+I have presented a systematic empirical study of KV cache vector
+quantization at attention head dimension $\dhead = 64$, a setting not
+evaluated in the four source papers built upon.
+The experiments on GPT-2 Medium identify two failure modes at this scale: high QJL residual variance and the collapse of FibQuant angular codebooks. I address these through a simple fallback heuristic that disables QJL residual estimation below $\dhead = 128$, as well as through MC-TurboQuant, which combines WHT vector quantization with Gated Residual Memory.
+
+Disabling the QJL residual calculation raises nearest-neighbor Recall@1 from 38.8\% to 67.4\% at $3.2{\times}$ compression, without increasing computational cost.
+MC-TurboQuant maintains 97.5\% average NIAH recall under quantization,
+demonstrating that recurrent memory caching and vector quantization
+compose without quality degradation.
+Empirical distortion remains within $1.83$--$2.46{\times}$ of the
+Shannon lower bound across two to five bits, confirming that the
+theoretical optimality of rotation-based scalar quantizers extends
+to $\dhead = 64$.
+
+The immediate next step is cross-dimension generalization: testing
+Adaptive QJL at $\dhead = 128$ on a larger model to determine whether
+the QJL residual correction is beneficial at that scale (as the
+source papers suggest) or whether the Adaptive approach provides
+improvements there as well.
+This experiment was not completed in the present study.
+Additional directions include implementing fused CUDA kernels to
+realize the theoretical latency advantages of the WHT, scaling the
+MC-RNN training experiment to match the parameter and data budgets
+of the original Memory Caching paper, and evaluating on models with
+intermediate head dimensions (\eg, $\dhead = 96$) to locate the
+precise threshold at which QJL residual correction transitions from
+harmful to beneficial.

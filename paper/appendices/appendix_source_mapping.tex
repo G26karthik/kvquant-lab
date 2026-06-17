@@ -1,0 +1,130 @@
+% =========================================================================
+% appendix_source_mapping.tex — Appendix D
+% =========================================================================
+
+\section{Source Mapping}
+\label{app:source_mapping}
+
+Table~\ref{tab:source_map} traces every quantitative claim in this paper
+to the specific file and field from which it was drawn.
+
+\begin{table}[H]
+\centering
+\caption{Source mapping: every number in the paper traced to its origin
+file and field.
+``FC'' = \texttt{final\_comparison.json};
+``NN'' = \texttt{nn\_search.json};
+``DB'' = \texttt{distortion\_bounds.json};
+``MV'' = \texttt{mc\_variants.json};
+``MA'' = \texttt{mc\_compressor\_ablation.json};
+``MT'' = \texttt{mc\_training\_results.json};
+``OR'' = \texttt{outlier\_results.json};
+``FR'' = \texttt{fibquant\_results.json};
+``LB'' = \texttt{longbench\_lite.json};
+``CR'' = \texttt{complexity\_recall.json};
+``RM'' = \texttt{README.md}.
+All JSON files are in \texttt{results/}.}
+\label{tab:source_map}
+\scriptsize
+\begin{tabular}{@{}p{4.2cm}lp{4.5cm}@{}}
+\toprule
+\textbf{Claim} & \textbf{Source} & \textbf{Field / Line} \\
+\midrule
+Baseline FP16 PPL = 19.03
+  & FC & schemes[0].wikitext\_ppl \\
+Published GPT-2 PPL = 19.69
+  & RM & line 235 \\
+TQ 3-bit PPL = 89.34
+  & FC & schemes[1].wikitext\_ppl \\
+TQ 4-bit PPL = 24.71
+  & FC & schemes[2].wikitext\_ppl \\
+WHT+Asym 3-bit PPL = 76.93
+  & FC & schemes[3].wikitext\_ppl \\
+WHT+Asym 4-bit PPL = 23.95
+  & FC & schemes[4].wikitext\_ppl \\
+MC-TQ 4-bit PPL = 23.95
+  & FC & schemes[5].wikitext\_ppl \\
+Outlier 2.5-bit PPL = 4.68
+  & OR & average\_perplexity.outlier\_2.5 \\
+Outlier 3.5-bit PPL = 5.56
+  & OR & average\_perplexity.outlier\_3.5 \\
+Flat 3-bit PPL = 4.69
+  & OR & average\_perplexity.flat\_3 \\
+Outlier 2.5-bit cache = 957\,KB
+  & OR & average\_cache\_size\_kb.outlier\_2.5 \\
+Flat 3-bit cache = 1{,}218\,KB
+  & OR & average\_cache\_size\_kb.flat\_3 \\
+\midrule
+Flat TQ 4-bit R@1 = 38.8\%
+  & NN & flat\_turboquant.4.recall\_1 \\
+WHT+Asym 4-bit R@1 = 67.4\%
+  & NN & wht\_asym.4.recall\_1 \\
+Flat TQ 3-bit R@1 = 14.0\%
+  & NN & flat\_turboquant.3.recall\_1 \\
+WHT+Asym 3-bit R@1 = 46.4\%
+  & NN & wht\_asym.3.recall\_1 \\
+Outlier 2.5-bit R@1 = 29.8\%
+  & NN & outlier\_split.2.5.recall\_1 \\
+Outlier 3.5-bit R@1 = 48.2\%
+  & NN & outlier\_split.3.5.recall\_1 \\
+\midrule
+WHT 4-bit MSE = 0.00912
+  & DB & mse\_results[2].wht\_mse \\
+Shannon bound 4-bit = 0.00391
+  & DB & mse\_results[2].shannon\_lb \\
+WHT/Shannon ratio 4-bit = 2.34
+  & DB & mse\_results[2].ratio\_wht \\
+WHT/Shannon range = 1.83--2.46
+  & DB & ratio\_wht values at 2--5 bits \\
+\midrule
+GRM PPL = 21.90
+  & MT & perplexity.grm \\
+Standard PPL = 81.95
+  & MT & perplexity.standard \\
+MC-GRM recall avg = 97.50\%
+  & RM & line 135 (Test 7 output) \\
+TQ Flat recall avg = 96.67\%
+  & RM & line 136 (Test 7 output) \\
+\midrule
+Outlier MSE = 0.01157
+  & RM & line 131 (Test 6 output) \\
+Flat 3-bit MSE = 0.03343
+  & RM & line 132 (Test 6 output) \\
+Beta fit: $a$=0.498, $b$=32.121
+  & RM & line 119 (Test 2 output) \\
+QJL bias = 0.0001
+  & RM & line 125 (Test 4 output) \\
+Compression ratio = 3.20$\times$
+  & RM & line 128 (Test 5 output) \\
+WHT MSE (Test 8) = 0.009130
+  & RM & line 139 (Test 8 output) \\
+Shannon bound (Test 8) = 0.003906
+  & RM & line 140 (Test 8 output) \\
+\midrule
+FibQuant MSE = 0.00338
+  & FR & mathematical\_fidelity.fibquant\_2d \\
+FibQuant PPL = 5.05
+  & FR & average\_perplexity.fibquant\_2d \\
+TQ MSE (FibQuant cmp) = 0.00179
+  & FR & mathematical\_fidelity.turboquant\_mse \\
+\midrule
+Checkpoint PPL = 17.06
+  & MA & checkpoint.avg\_perplexity \\
+Independent PPL = 2.13
+  & MA & independent.avg\_perplexity \\
+Independent cache = 6{,}912\,KB
+  & MA & independent.avg\_cache\_size\_kb \\
+Checkpoint cache = 13{,}056\,KB
+  & MA & checkpoint.avg\_cache\_size\_kb \\
+\midrule
+MQAR values (all 0\% or 10\%)
+  & MV & mqar\_results (all fields) \\
+LongBench Baseline QA = 25.0
+  & LB & Baseline.passage\_qa \\
+LongBench Baseline Summ = 11.99
+  & LB & Baseline.summarization \\
+Complexity-recall data
+  & CR & all entries \\
+\bottomrule
+\end{tabular}
+\end{table}
