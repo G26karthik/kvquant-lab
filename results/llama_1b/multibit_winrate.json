@@ -1,0 +1,66 @@
+{
+  "2": {
+    "symmetric": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 180.05719283223152,
+      "qjl_mean_all": 2443.1986290216446
+    },
+    "asymmetric_diagonal": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 88.07818667404354,
+      "qjl_mean_all": 467.0760405063629
+    }
+  },
+  "3": {
+    "symmetric": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 54.26496162265539,
+      "qjl_mean_all": 446.23066660761833
+    },
+    "asymmetric_diagonal": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 27.005630377680063,
+      "qjl_mean_all": 155.2123079225421
+    }
+  },
+  "4": {
+    "symmetric": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 15.177659638691694,
+      "qjl_mean_all": 99.38753481954336
+    },
+    "asymmetric_diagonal": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 7.582878191955388,
+      "qjl_mean_all": 44.63783887960017
+    }
+  },
+  "5": {
+    "symmetric": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 3.9821083801798522,
+      "qjl_mean_all": 24.665387265384197
+    },
+    "asymmetric_diagonal": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 1.981710969354026,
+      "qjl_mean_all": 12.286580596817657
+    }
+  }
+}

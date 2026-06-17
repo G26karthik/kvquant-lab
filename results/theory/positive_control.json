@@ -1,0 +1,34 @@
+{
+  "0.0": {
+    "symmetric": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 0.00014398751810063004,
+      "qjl_mean_all": 0.001963332809964413
+    },
+    "asymmetric_diagonal": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 7.597677548432102e-05,
+      "qjl_mean_all": 0.000371619517977706
+    }
+  },
+  "0.8": {
+    "symmetric": {
+      "wins": 0,
+      "total_cells": 128,
+      "win_rate": 0.0,
+      "mse_mean_all": 0.0005592190318566281,
+      "qjl_mean_all": 0.0023669028309996065
+    },
+    "asymmetric_diagonal": {
+      "wins": 128,
+      "total_cells": 128,
+      "win_rate": 1.0,
+      "mse_mean_all": 0.008905803149900748,
+      "qjl_mean_all": 0.0003193695616801051
+    }
+  }
+}
