@@ -16,7 +16,6 @@ This project studies the TurboQuant quantizers ([arXiv:2504.19874](https://arxiv
 | `turboquant/` | Quantizer implementations |
 | `benchmarks/` | Evaluation scripts |
 | `training/` | Memory-caching training script |
-| `paper/`, `results/` | First-generation drafts and outputs (superseded) |
 
 ## Setup
 

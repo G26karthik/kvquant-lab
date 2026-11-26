@@ -412,7 +412,7 @@ def main():
     # Read original results to compare side-by-side
     script_dir = os.path.dirname(os.path.abspath(__file__))
     results_dir = os.path.join(os.path.dirname(script_dir), "results")
-    orig_path = os.path.join(results_dir, "results.json")
+    orig_path = os.path.join(script_dir, "results.json")
     
     with open(orig_path, "r", encoding="utf-8") as f:
         orig = json.load(f)
